@@ -29,18 +29,7 @@ namespace DataManager
                 var ec = ws.Dimension.End.Column;
 
                 //define columns for datatable Cells[start row, start column, max Row, max Column]
-                dt.TableName = xlFile.Name;
-                foreach (var header in ws.Cells[startRow, 1, 1, ec])
-                {
-                    DataColumn newCol = new DataColumn();
-                    if (NumCheck(header.Text.ToLower()))
-                    {
-                        newCol.DataType = System.Type.GetType("System.Double"); //Added to guess datatype based on header text
-                    }
-                    newCol.ColumnName = (string)header.Text;
-                    dt.Columns.Add(newCol);
-                    //dt.Columns.Add((string)header.Text); //working original
-                }
+                dt.TableName = xlFile.Name + ws.Name; //correct to filename + sheetname
 
                 //adds column reflecting file/sheet name
                 DataColumn tagColumn = new DataColumn
@@ -58,9 +47,14 @@ namespace DataManager
                 };
                 dt.Columns.Add(tagColumnSheet);
 
-
+                foreach (var header in ws.Cells[startRow, 1, 1, ec])
+                {
+                    DataColumn newCol = new DataColumn();
+                    dt.Columns.Add((string)header.Text);
+                }
 
                 //add rows in the same order as column titles
+                int dtEnd = dt.Columns.Count+3;
                 for (int rowNum = startRow + 1; rowNum <= er; rowNum++)
                 {
                     DataRow row = dt.NewRow();
@@ -68,12 +62,13 @@ namespace DataManager
                     {
                         try
                         {
-                            row[cell.Start.Column - 1] = cell.Value; // row[index] starts at zero
+                            row[cell.Start.Column + 1] = cell.Value; // row[index] starts at zero
                         }
                         catch(ArgumentException)
                         {
                             break;
                         }
+                        //add catch to check seed cell.start.col + 1 is >= columns added
                     }
                     dt.Rows.Add(row);  //necessary to add for after all fields are set
                 }
