@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Configuration;
 using System.Collections.Generic;
 using System.Data;
 using System.IO;
@@ -10,18 +9,15 @@ namespace DataManager
     public class SurveyUtilities
     {
         #region METHODS
-        //get DataTable from excel example
+        
         public static DataTable GetDTfromExcel(FileInfo xlFile, int startRow, string sheetName)
         {
-            //open workbook!
-            //FileInfo xlFile = new FileInfo(loc);
             DataTable dt = new DataTable();
             using (ExcelPackage pck = new ExcelPackage(xlFile))
             {
                 //get first sheet & pull into data table
-                ExcelWorksheet ws = pck.Workbook.Worksheets[sheetName]; //1 is the first worksheet in list - Add to args list to take user input
-
-                //Create table columns using for loop from user defined start row
+                ExcelWorksheet ws = pck.Workbook.Worksheets[sheetName]; //1 is the first worksheet in list
+                
                 //find beginning & end of sheet
                 var sr = ws.Dimension.Start.Row;
                 var sc = ws.Dimension.Start.Column;
@@ -29,7 +25,7 @@ namespace DataManager
                 var ec = ws.Dimension.End.Column;
 
                 //define columns for datatable Cells[start row, start column, max Row, max Column]
-                dt.TableName = xlFile.Name + ws.Name; //correct to filename + sheetname
+                dt.TableName = xlFile.Name + ws.Name;
 
                 //adds column reflecting file/sheet name
                 DataColumn tagColumn = new DataColumn
@@ -47,18 +43,19 @@ namespace DataManager
                 };
                 dt.Columns.Add(tagColumnSheet);
 
-                foreach (var header in ws.Cells[startRow, 1, 1, ec])
+                foreach (var header in ws.Cells[startRow, 1, startRow, ec])
                 {
                     DataColumn newCol = new DataColumn();
                     dt.Columns.Add((string)header.Text);
                 }
 
                 //add rows in the same order as column titles
-                int dtEnd = dt.Columns.Count+3;
+                //shifted columns +2 to account for tag columns
+                int dtEnd = dt.Columns.Count-1;
                 for (int rowNum = startRow + 1; rowNum <= er; rowNum++)
                 {
                     DataRow row = dt.NewRow();
-                    foreach (var cell in ws.Cells[rowNum, 1, rowNum, ec])
+                    foreach (var cell in ws.Cells[rowNum, 1, rowNum, dtEnd]) //switched to dtEnd dut to issue where cell ec goes further than column headers created
                     {
                         try
                         {
@@ -68,9 +65,14 @@ namespace DataManager
                         {
                             break;
                         }
-                        //add catch to check seed cell.start.col + 1 is >= columns added
+                        catch (IndexOutOfRangeException)
+                        {
+                            //added due to inconsistency of column range
+                            break;
+                        }
+
                     }
-                    dt.Rows.Add(row);  //necessary to add for after all fields are set
+                    dt.Rows.Add(row);
                 }
             }
             return dt;
@@ -131,27 +133,10 @@ namespace DataManager
                 var ws = pkg.Workbook.Worksheets;
                 List<string> allSheets = new List<string>();
                 foreach (var s in ws) allSheets.Add(s.ToString());
-                //for (int i = 1; i <= ws.Count; i++) Console.WriteLine($"{ws[i].Name}");
                 return allSheets;
             }
         }
-
-        public static bool NumCheck(string header)
-        {
-            //check if columnn should be changed to number
-            string regexString = @"\w*\s*([1-95]|av|med|min|mid|max|elig|rec|%|per|exempt|obs|emp)\w*\s*";
-            RegexStringValidator regexTest = new RegexStringValidator(regexString);
-            try
-            {
-                regexTest.Validate(header);
-                return true;
-            }
-            catch (ArgumentException)
-            {
-                return false;
-            }
-        }
-
+        
         public static DataTable MakeErrorTable()
         {
             DataTable table = new DataTable("ERRORS");
