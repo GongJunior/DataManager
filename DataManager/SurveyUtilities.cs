@@ -43,6 +43,7 @@ namespace DataManager
                 };
                 dt.Columns.Add(tagColumnSheet);
 
+                int i = 1;
                 foreach (var header in ws.Cells[startRow, 1, startRow, ec])
                 {
                     try
@@ -50,11 +51,10 @@ namespace DataManager
                         DataColumn newCol = new DataColumn();
                         dt.Columns.Add((string)header.Text);
                     }
-                    catch (System.Data.DuplicateNameException)
+                    catch (System.Data.DuplicateNameException) //manages repeate columns in same table
                     {
                         DataColumn newCol = new DataColumn();
-                        int i = 1;
-                        dt.Columns.Add((string)header.Text + i.ToString());
+                        dt.Columns.Add((string)header.Text + "." + i.ToString());
                         i++;
                     }
                         
