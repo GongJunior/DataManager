@@ -45,8 +45,20 @@ namespace DataManager
 
                 foreach (var header in ws.Cells[startRow, 1, startRow, ec])
                 {
-                    DataColumn newCol = new DataColumn();
-                    dt.Columns.Add((string)header.Text);
+                    try
+                    {
+                        DataColumn newCol = new DataColumn();
+                        dt.Columns.Add((string)header.Text);
+                    }
+                    catch (System.Data.DuplicateNameException)
+                    {
+                        DataColumn newCol = new DataColumn();
+                        int i = 1;
+                        dt.Columns.Add((string)header.Text + i.ToString());
+                        i++;
+                    }
+                        
+                        
                 }
 
                 //add rows in the same order as column titles
