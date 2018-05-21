@@ -35,7 +35,7 @@ namespace DataManager
             OpenFileDialog choosFiles = new OpenFileDialog
             {
                 Multiselect = true,
-                Filter = "Excel Files|*.xlsx",
+                Filter = "Excel Files|*.xlsx;*.xls",
             };
             choosFiles.ShowDialog();
             files.AddRange(choosFiles.FileNames);

@@ -2,94 +2,79 @@
 using System.Collections.Generic;
 using System.Data;
 using System.IO;
+using ExcelDataReader;
 using OfficeOpenXml;
 
 namespace DataManager
 {
     public class SurveyUtilities
     {
-        #region METHODS
+        #region FromFileToDT
         
-        public static DataTable GetDTfromExcel(FileInfo xlFile, int startRow, string sheetName)
+        public static List<DataTable> GetDTfromExcel(FileInfo xlFile, int startRow, List<string> requsetedSheets)
         {
-            DataTable dt = new DataTable();
-            using (ExcelPackage pck = new ExcelPackage(xlFile))
+            List<DataTable> tables = new List<DataTable>();
+            DataTable errorTable = MakeErrorTable();
+            List<string> actualSheets = new List<string>();
+            bool UseAllSheets;
+            UseAllSheets = (requsetedSheets[0] == "allsheets") ? true : false;
+
+            using (var stream = File.Open(xlFile.FullName, FileMode.Open, FileAccess.Read))
             {
-                //get first sheet & pull into data table
-                ExcelWorksheet ws = pck.Workbook.Worksheets[sheetName]; //1 is the first worksheet in list
-                
-                //find beginning & end of sheet
-                var sr = ws.Dimension.Start.Row;
-                var sc = ws.Dimension.Start.Column;
-                var er = ws.Dimension.End.Row;
-                var ec = ws.Dimension.End.Column;
-
-                //define columns for datatable Cells[start row, start column, max Row, max Column]
-                dt.TableName = xlFile.Name + ws.Name;
-
-                //adds column reflecting file/sheet name
-                DataColumn tagColumn = new DataColumn
+                using (var reader = ExcelReaderFactory.CreateReader(stream))
                 {
-                    DataType = System.Type.GetType("System.String"),
-                    ColumnName = "File ID Tag",
-                    DefaultValue = xlFile.Name
-                };
-                dt.Columns.Add(tagColumn);
-                DataColumn tagColumnSheet = new DataColumn
-                {
-                    DataType = System.Type.GetType("System.String"),
-                    ColumnName = "Sheet ID Tag",
-                    DefaultValue = sheetName
-                };
-                dt.Columns.Add(tagColumnSheet);
-
-                int i = 1;
-                foreach (var header in ws.Cells[startRow, 1, startRow, ec])
-                {
-                    try
+                    do
                     {
-                        DataColumn newCol = new DataColumn();
-                        dt.Columns.Add((string)header.Text);
-                    }
-                    catch (System.Data.DuplicateNameException) //manages repeate columns in same table
-                    {
-                        DataColumn newCol = new DataColumn();
-                        dt.Columns.Add((string)header.Text + "." + i.ToString());
-                        i++;
-                    }
+                        if (!UseAllSheets && !requsetedSheets.Contains(reader.Name)) continue;
                         
-                        
-                }
+                        DataTable table = new DataTable();
+                        bool headerRow = true;
+                        int startRow_check = 1;
+                        int BlankRow = 0;
 
-                //add rows in the same order as column titles
-                //shifted columns +2 to account for tag columns
-                int dtEnd = dt.Columns.Count-1;
-                for (int rowNum = startRow + 1; rowNum <= er; rowNum++)
-                {
-                    DataRow row = dt.NewRow();
-                    foreach (var cell in ws.Cells[rowNum, 1, rowNum, dtEnd]) //switched to dtEnd dut to issue where cell ec goes further than column headers created
-                    {
-                        try
+                        while (reader.Read())
                         {
-                            row[cell.Start.Column + 1] = cell.Value; // row[index] starts at zero
-                        }
-                        catch(ArgumentException)
-                        {
-                            break;
-                        }
-                        catch (IndexOutOfRangeException)
-                        {
-                            //added due to inconsistency of column range
-                            break;
-                        }
+                            if (startRow_check < startRow)
+                            {
+                                startRow_check++;
+                                continue;
+                            }
 
-                    }
-                    dt.Rows.Add(row);
+                            IDataRecord rowData = reader;
+                            if (headerRow == true)
+                            {
+                                // make column headers for datatable
+                                table = CreateTable(table, rowData);
+                                headerRow = false;
+                                continue;
+                            }
+
+                            // add blank or actual data rows
+                            if (RowIsNull(rowData))
+                            {
+                                BlankRow++;
+                                continue;
+                            }
+                            for(int i = 0; i< BlankRow; i++)
+                            {
+                                table.Rows.Add(table.NewRow());
+                            }
+                            BlankRow = 0;
+
+                            table = AddToTable(table, rowData, xlFile.Name, reader.Name);
+                        }
+                        tables.Add(table);
+                        actualSheets.Add(reader.Name);
+                    } while (reader.NextResult());
                 }
             }
-            return dt;
+            errorTable = RequestedSheetsCheck(errorTable, actualSheets, requsetedSheets, xlFile.Name);
+            tables.Add(errorTable);
+            return tables;
         }
-        
+        #endregion
+
+        #region WriteToFile
         //add DataTable to file
         public static void DTtoExcel(DataTable dt, string loc)
         {
@@ -125,30 +110,25 @@ namespace DataManager
                 pkg.SaveAs(finFile);
             }
         }
+        #endregion
 
-        // Generates list of files in a given directory
-        public static List<FileInfo> GetFiles(DirectoryInfo dir)
+        #region Helpers
+        private static DataTable RequestedSheetsCheck(DataTable errorTable, List<string> actualSheets, List<string> requsetedSheets, string filename)
         {
-            List<FileInfo> files = new List<FileInfo>();
-            foreach (FileInfo file in dir.GetFiles())
+            foreach (string sheet in requsetedSheets)
             {
-                if (file.Name.EndsWith(".xlsx")) files.Add(file);
+                if (!actualSheets.Contains(sheet))
+                {
+                    DataRow tableRow = errorTable.NewRow();
+                    tableRow["File Name"] = filename;
+                    tableRow["Sheet Name"] = sheet;
+                    tableRow["Message"] = "Sheet not found";
+                    errorTable.Rows.Add(tableRow);
+                }
             }
-            return files;
+            return errorTable;
         }
-        
-        //Generates list of sheets in a given file
-        public static List<string> GetSheets(FileInfo file)
-        {
-            using (ExcelPackage pkg = new ExcelPackage(file))
-            {
-                var ws = pkg.Workbook.Worksheets;
-                List<string> allSheets = new List<string>();
-                foreach (var s in ws) allSheets.Add(s.ToString());
-                return allSheets;
-            }
-        }
-        
+
         public static DataTable MakeErrorTable()
         {
             DataTable table = new DataTable("ERRORS");
@@ -168,8 +148,65 @@ namespace DataManager
             return table;
         }
 
+        private static bool RowIsNull(IDataRecord row)
+        {
+            for(int i = 0; i < row.FieldCount; i++)
+            {
+                if (row.GetValue(i) != null) return false;
+            }
+            return true;
+        }
+
+        private static DataTable AddToTable(DataTable table, IDataRecord row, string filename, string sheetname)
+        {
+            DataRow tableRow = table.NewRow();
+            tableRow["File_tag"] = filename;
+            tableRow["Sheet_tag"] = sheetname;
+            for (int i = 2; i < table.Columns.Count; i++)
+            {
+                tableRow[i] = row.GetValue(i - 2);
+            }
+            table.Rows.Add(tableRow);
+
+            return table;
+        }
+
+        private static DataTable CreateTable(DataTable table, IDataRecord row)
+        {
+            DataColumn fileColumn = new DataColumn("File_Tag", typeof(string));
+            table.Columns.Add(fileColumn);
+            DataColumn sheetColumn = new DataColumn("Sheet_Tag", typeof(string));
+            table.Columns.Add(sheetColumn);
+
+            for (int i = 0; i < row.FieldCount; i++)
+            {
+                int dupNameCounter = 1;
+
+                try
+                {
+                    DataColumn column = new DataColumn(row.GetString(i), typeof(object));
+                    table.Columns.Add(column);
+                }
+                catch (ArgumentException)
+                {
+                    //should catch null returned for column name
+                    DataColumn column = new DataColumn("Column" + i.ToString(), typeof(object));
+                    table.Columns.Add(column);
+                }
+                catch (DuplicateNameException)
+                {
+                    DataColumn column = new DataColumn(row.GetString(i) + dupNameCounter.ToString(), typeof(object));
+                    table.Columns.Add(column);
+                    dupNameCounter++;
+                }
+
+
+            }
+
+            return table;
+        }
         #endregion
     }
 
-    
+
 }
