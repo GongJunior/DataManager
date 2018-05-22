@@ -17,10 +17,10 @@
         </Style>
     </Window.Resources>
     <Canvas Background="DimGray" Width="400" Height="125">
-        <Button x:Name="OpenFld" Content="Select Files" HorizontalAlignment="Center" VerticalAlignment="Top" Width="75" Click="SlctFiles_Click" Canvas.Left="306" Canvas.Top="10"/>
-        <Button Content="RUN" Canvas.Left="306" Canvas.Top="46" Width="75" Click="Run_Button_Click" RenderTransformOrigin="2.1,-10.849"/>
+        <Button x:Name="OpenFld" Content="Select Files" HorizontalAlignment="Center" VerticalAlignment="Top" Width="75" Click="SlctFiles_Click" Canvas.Left="315" Canvas.Top="56"/>
+        <Button Content="RUN" Canvas.Left="315" Canvas.Top="81" Width="75" Click="Run_Button_Click" RenderTransformOrigin="2.1,-10.849"/>
 
-        <TextBox x:Name="StartRow" Style="{StaticResource TextBoxInError}" HorizontalAlignment="Center" VerticalAlignment="Center" Height="25" Width="200" Grid.Row="1" Canvas.Left="101" Canvas.Top="41">
+        <TextBox x:Name="StartRow" Style="{StaticResource TextBoxInError}" HorizontalAlignment="Center" VerticalAlignment="Center" Height="25" Width="200" Grid.Row="1" Canvas.Left="101" Canvas.Top="76">
             <TextBox.Text>
                 <Binding Path="Startrow" Source="{StaticResource myDataSource}" ValidatesOnExceptions="True" UpdateSourceTrigger="LostFocus">
                     <Binding.ValidationRules>
@@ -29,7 +29,7 @@
                 </Binding>
             </TextBox.Text>
         </TextBox>
-        <TextBox x:Name="SheetName" Style="{StaticResource TextBoxInError}" Height="25" Canvas.Left="101" TextWrapping="Wrap" Canvas.Top="10" Width="200">
+        <TextBox x:Name="SheetName" Style="{StaticResource TextBoxInError}" Height="25" Canvas.Left="101" TextWrapping="Wrap" Canvas.Top="46" Width="200">
             <TextBox.Text>
                 <Binding Path="Sheetnames" Source="{StaticResource myDataSource}" ValidatesOnExceptions="True" UpdateSourceTrigger="LostFocus">
                     <Binding.ValidationRules>
@@ -39,9 +39,9 @@
             </TextBox.Text>
         </TextBox>
 
-        <Label Content="Start Row" HorizontalAlignment="Left" Grid.Row="1" VerticalAlignment="Top" RenderTransformOrigin="-0.084,-0.351" Canvas.Left="10" Canvas.Top="40"/>
-        <Label Content="Sheet Name(s)" Canvas.Left="10" Canvas.Top="10" />
+        <Label Content="Start Row" HorizontalAlignment="Left" Grid.Row="1" VerticalAlignment="Top" RenderTransformOrigin="-0.084,-0.351" Canvas.Left="10" Canvas.Top="76"/>
+        <Label Content="Sheet Name(s)" Canvas.Left="10" Canvas.Top="50" />
 
-        <TextBlock x:Name="NumSelected" Canvas.Left="321" TextWrapping="NoWrap" Canvas.Top="29" RenderTransformOrigin="-0.116,0.062" Height="15" Width="45" FontSize="12" Text="0 files!" Foreground="#FFC80000"/>
+        <TextBlock x:Name="NumSelected" Canvas.Left="336" TextWrapping="NoWrap" Canvas.Top="101" RenderTransformOrigin="-0.116,0.062" Height="15" Width="45" FontSize="12" Text="0 files!" Foreground="#FFC80000"/>
     </Canvas>
 </Window>
