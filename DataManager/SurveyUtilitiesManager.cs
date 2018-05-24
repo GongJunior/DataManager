@@ -87,9 +87,9 @@ namespace DataManager
             {
                 OnProgressChanged(1, $"Loading {file.Name}...");
 
-                tables.AddRange(SurveyUtilities.GetDTfromExcel(file, Convert.ToInt32(startrow), sheets));
-                errorTable.Merge(tables[tables.Count - 1]);
-                tables.RemoveAt(tables.Count - 1);
+                var package = SurveyUtilities.GetDTfromExcel(file, Convert.ToInt32(startrow), sheets);
+                tables.AddRange(package.data);
+                errorTable.Merge(package.errors);
                 if (OnCheckCancel())
                 {
                     return;
