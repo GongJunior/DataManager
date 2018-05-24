@@ -32,7 +32,7 @@ namespace DataManager
             return errorTable;
         }
 
-         protected virtual DataTable MakeErrorTable()
+         protected DataTable MakeErrorTable()
         {
             DataTable table = new DataTable("ERRORS");
             DataColumn column;
