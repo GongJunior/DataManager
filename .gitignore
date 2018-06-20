@@ -10,3 +10,5 @@ bld/
 [Oo]bj/
 [Ll]og/
 DataManager/publish/
+*.user
+*/packages.config
