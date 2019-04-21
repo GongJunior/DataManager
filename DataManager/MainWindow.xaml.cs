@@ -35,7 +35,7 @@ namespace DataManager
             OpenFileDialog choosFiles = new OpenFileDialog
             {
                 Multiselect = true,
-                Filter = "Crosstab|*.xlsx;*.xls;*.csv|Excel Files|*.xlsx;*.xls|CSV files (*.csv)|*.csv",
+                Filter = "Excel Files|*.xlsx;*.xls|Crosstab|*.xlsx;*.xls;*.csv|CSV files (*.csv)|*.csv",
             };
             choosFiles.ShowDialog();
             files.AddRange(choosFiles.FileNames);
