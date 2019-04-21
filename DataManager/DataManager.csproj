@@ -54,10 +54,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestCertificateThumbprint>CECE1C88E264552E9D90F576B1BB932F76262FCF</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>ECFE9E3C66C78AB5AF9346D00B5B3F65B4307936</ManifestCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestKeyFile>PFAppv2_TemporaryKey.pfx</ManifestKeyFile>
+    <ManifestKeyFile>DataManager_TemporaryKey.pfx</ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
     <GenerateManifests>true</GenerateManifests>
@@ -173,6 +173,9 @@
     <Compile Include="ProgressBarTask.xaml.cs" />
     <Compile Include="SurveyUtilities.cs" />
     <Compile Include="SurveyUtilitiesManager.cs" />
+    <Compile Include="UI_contentPages\Standard.xaml.cs">
+      <DependentUpon>Standard.xaml</DependentUpon>
+    </Compile>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -186,6 +189,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="ProgressBarTask.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI_contentPages\Standard.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -208,6 +215,7 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include="DataManager_TemporaryKey.pfx" />
     <None Include="packages.config" />
     <None Include="PFAppv2_TemporaryKey.pfx" />
     <None Include="Properties\Settings.settings">
@@ -230,9 +238,20 @@
       <Install>false</Install>
     </BootstrapperPackage>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="Resources\StdImage.bmp" />
+  </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\appicon.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Settings.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\instrux.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\AddDictionary.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
