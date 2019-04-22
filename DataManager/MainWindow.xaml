@@ -17,15 +17,15 @@
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
         <DockPanel Grid.Row="1" Grid.Column="0" LastChildFill="False">
-            <Button x:Name="StandardPage" ToolTip="Standard Page" Click="StandardPage_Click" DockPanel.Dock="Top" Style="{StaticResource LeftPanelButtonStyle}">
+            <Button x:Name="StandardPage" ToolTip="Combining" Click="StandardPage_Click" DockPanel.Dock="Top" Style="{StaticResource LeftPanelButtonStyle}">
                 <Image Source="resources/StdImage.bmp"/>
             </Button>
             <Separator/>
-            <Button x:Name="SecondPage" ToolTip="Second Page" Click="SecondPage_Click" DockPanel.Dock="Top" Style="{StaticResource LeftPanelButtonStyle}">
+            <Button x:Name="InstructionsPage" ToolTip="Instructions" Click="Instructions_Click" DockPanel.Dock="Top" Style="{StaticResource LeftPanelButtonStyle}">
                 <Image Source="resources/AddDictionary.png"/>
             </Button>
             <Separator/>
-            <Button x:Name="ThirdPage" ToolTip="Third Page" Click="ThirdPage_Click" DockPanel.Dock="Top" Style="{StaticResource LeftPanelButtonStyle}" VerticalAlignment="Top">
+            <Button x:Name="MiscPage" ToolTip="Miscellaneous" Click="Misc_Click" DockPanel.Dock="Top" Style="{StaticResource LeftPanelButtonStyle}" VerticalAlignment="Top">
                 <Image Source="resources/instrux.bmp"/>
             </Button>
             <Button x:Name="Settings" ToolTip="Settings Page" Click="Settings_Click" DockPanel.Dock="Bottom" Style="{StaticResource LeftPanelButtonStyle}">

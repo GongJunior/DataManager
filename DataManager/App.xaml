@@ -13,5 +13,9 @@
             <Setter Property="Background" Value="#51555b"/>
             <Setter Property="BorderThickness" Value="0"/>
         </Style>
+        <Style x:Key="PageFormats" TargetType="{x:Type Page}">
+            <Setter Property="Width" Value="350"/>
+            <Setter Property="Height" Value="535"/>
+        </Style>
     </Application.Resources>
 </Application>

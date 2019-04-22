@@ -171,8 +171,17 @@
     <Compile Include="ExcelDataSource.cs" />
     <Compile Include="GeneralUtilities.cs" />
     <Compile Include="ProgressBarTask.xaml.cs" />
+    <Compile Include="UI_contentPages\MiscFunctions.xaml.cs">
+      <DependentUpon>MiscFunctions.xaml</DependentUpon>
+    </Compile>
     <Compile Include="SurveyUtilities.cs" />
     <Compile Include="SurveyUtilitiesManager.cs" />
+    <Compile Include="UI_contentPages\Instructions.xaml.cs">
+      <DependentUpon>Instructions.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI_contentPages\Settings.xaml.cs">
+      <DependentUpon>Settings.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UI_contentPages\Standard.xaml.cs">
       <DependentUpon>Standard.xaml</DependentUpon>
     </Compile>
@@ -189,6 +198,18 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="ProgressBarTask.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI_contentPages\MiscFunctions.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI_contentPages\Instructions.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI_contentPages\Settings.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

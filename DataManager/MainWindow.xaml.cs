@@ -19,24 +19,22 @@ namespace DataManager
 
         private void Settings_Click(object sender, RoutedEventArgs e)
         {
-
+            ChangePageIfNew("UI_contentPages/Settings.xaml", Settings.ToolTip.ToString());
         }
 
-        private void ThirdPage_Click(object sender, RoutedEventArgs e)
+        private void Misc_Click(object sender, RoutedEventArgs e)
         {
-            //ChangePageIfNew("ThirdPage.xaml", "Third Page");
-            //Page note implemented yet
+            ChangePageIfNew("UI_contentPages/MiscFunctions.xaml", MiscPage.ToolTip.ToString());
         }
 
-        private void SecondPage_Click(object sender, RoutedEventArgs e)
+        private void Instructions_Click(object sender, RoutedEventArgs e)
         {
-            //ChangePageIfNew("SecondPage.xaml", "Second Page");
-            //Page note implemented yet
+            ChangePageIfNew("UI_contentPages/Instructions.xaml", InstructionsPage.ToolTip.ToString());
         }
 
         private void StandardPage_Click(object sender, RoutedEventArgs e)
         {
-            ChangePageIfNew("UI_contentPages/Standard.xaml", "Standard Page");
+            ChangePageIfNew("UI_contentPages/Standard.xaml", StandardPage.ToolTip.ToString());
         }
 
         private void ChangePageIfNew(string pageRequest, string newTitle)
