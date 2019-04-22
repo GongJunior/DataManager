@@ -10,6 +10,6 @@
       Title="MiscFunctions">
 
     <Grid Background="Black">
-        <Label VerticalAlignment="Center" FontSize="20" Foreground="Blue" >COMING SOON</Label>
+        <Label VerticalAlignment="Center" FontSize="20" Foreground="Blue" >Maybe</Label>
     </Grid>
 </Page>

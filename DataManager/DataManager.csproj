@@ -274,5 +274,11 @@
   <ItemGroup>
     <Resource Include="Resources\AddDictionary.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\FindinFiles.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\run.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

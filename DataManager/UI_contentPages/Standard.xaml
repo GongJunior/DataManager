@@ -19,11 +19,27 @@
             </Style.Triggers>
         </Style>
     </Page.Resources>
-    <Canvas Background="DimGray" Width="350" Height="535">
-        <Button x:Name="OpenFld" Content="Select Files" HorizontalAlignment="Center" VerticalAlignment="Top" Width="75" Click="SlctFiles_Click" Canvas.Left="101" Canvas.Top="120"/>
-        <Button Content="RUN" Canvas.Left="101" Canvas.Top="159" Width="75" Click="Run_Button_Click" RenderTransformOrigin="2.1,-10.849"/>
+    <Grid Background="#edf2f9" ShowGridLines="False">
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
 
-        <TextBox x:Name="StartRow" Style="{StaticResource TextBoxInError}" HorizontalAlignment="Center" VerticalAlignment="Center" Height="25" Width="200" Grid.Row="1" Canvas.Left="101" Canvas.Top="76">
+        <Button x:Name="OpenFld" Grid.Row="0" VerticalAlignment="Top" Grid.Column="0" Width="25" Height="25" Click="SlctFiles_Click" Margin="10,10,53,0">
+            <Image Source="/Resources/FindinFiles.png" ToolTip="Select Files" HorizontalAlignment="Left"/>
+        </Button>
+        <Button Grid.Column="3" Grid.Row="2" VerticalAlignment="Bottom" Height="25" Width="25" Click="Run_Button_Click" Margin="30,0,32,59">
+            <Image Source="/Resources/run.png"/>
+        </Button>
+
+        <TextBox x:Name="StartRow" Grid.Column="1" Grid.Row="0" Style="{StaticResource TextBoxInError}" HorizontalAlignment="Left" VerticalAlignment="Center" Height="25" Width="25" Margin="0,39,0,114">
             <TextBox.Text>
                 <Binding Path="Startrow" Source="{StaticResource myDataSource}" ValidatesOnExceptions="True" UpdateSourceTrigger="LostFocus">
                     <Binding.ValidationRules>
@@ -32,7 +48,7 @@
                 </Binding>
             </TextBox.Text>
         </TextBox>
-        <TextBox x:Name="SheetName" Style="{StaticResource TextBoxInError}" Height="25" Canvas.Left="101" TextWrapping="Wrap" Canvas.Top="46" Width="200">
+        <TextBox x:Name="SheetName" Grid.Column="1" Grid.Row="0" Style="{StaticResource TextBoxInError}" Height="25" HorizontalAlignment="Left" VerticalAlignment="Center"  TextWrapping="Wrap" Width="100" Margin="0,59,0,74">
             <TextBox.Text>
                 <Binding Path="Sheetnames" Source="{StaticResource myDataSource}" ValidatesOnExceptions="True" UpdateSourceTrigger="LostFocus">
                     <Binding.ValidationRules>
@@ -42,9 +58,9 @@
             </TextBox.Text>
         </TextBox>
 
-        <Label Content="Start Row" HorizontalAlignment="Left" Grid.Row="1" VerticalAlignment="Top" RenderTransformOrigin="-0.084,-0.351" Canvas.Left="10" Canvas.Top="76"/>
-        <Label Content="Sheet Name(s)" Canvas.Left="10" Canvas.Top="50" />
+        <Label Content="Start Row" HorizontalAlignment="Left" Grid.Row="0" Margin="0,39,0,114" VerticalAlignment="Center"/>
+        <Label Content="Sheet Name(s)" Grid.Column="0" Grid.Row="0" Margin="0,59,0,74" VerticalAlignment="Center"/>
 
-        <TextBlock x:Name="NumSelected" Canvas.Left="217" TextWrapping="NoWrap" Canvas.Top="125" RenderTransformOrigin="-0.116,0.062" Height="15" Width="45" FontSize="12" Text="0 files!" Foreground="#FFC80000"/>
-    </Canvas>
+        <TextBlock x:Name="NumSelected" Grid.Row="0" TextWrapping="NoWrap" Height="15" Width="45" FontSize="12" Text="0 files!" Foreground="#FFC80000" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="43,14,0,0"/>
+    </Grid>
 </Page>

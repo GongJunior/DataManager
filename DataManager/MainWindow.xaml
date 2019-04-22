@@ -28,11 +28,11 @@
             <Button x:Name="MiscPage" ToolTip="Miscellaneous" Click="Misc_Click" DockPanel.Dock="Top" Style="{StaticResource LeftPanelButtonStyle}" VerticalAlignment="Top">
                 <Image Source="resources/instrux.bmp"/>
             </Button>
-            <Button x:Name="Settings" ToolTip="Settings Page" Click="Settings_Click" DockPanel.Dock="Bottom" Style="{StaticResource LeftPanelButtonStyle}">
+            <Button x:Name="Settings" ToolTip="Settings" Click="Settings_Click" DockPanel.Dock="Bottom" Style="{StaticResource LeftPanelButtonStyle}">
                 <Image Source="resources/Settings.png"/>
             </Button>
         </DockPanel>
-        <DockPanel Grid.Row="2" Grid.ColumnSpan="2" Background="Blue">
+        <DockPanel Grid.Row="2" Grid.ColumnSpan="2" Background="#4286f4">
 
         </DockPanel>
         <Label x:Name="PageTitle" Grid.Column="1" Grid.Row="0" HorizontalAlignment="Center" FontSize="25">Standard Page</Label>
