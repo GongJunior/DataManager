@@ -102,6 +102,11 @@ namespace DataManager
                     table.Columns.Add(column);
                     dupNameCounter++;
                 }
+                catch (InvalidCastException)
+                {
+                    DataColumn column = new DataColumn(row.GetValue(i).ToString(), typeof(object));
+                    table.Columns.Add(column);
+                }
 
 
             }
