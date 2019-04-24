@@ -15,12 +15,8 @@ namespace DataManager.UI_contentPages
     {
         List<string> files = new List<string>();
         ProgressBarTask alert;
-        BackgroundWorker worker = new BackgroundWorker
-        {
-            WorkerReportsProgress = true,
-            WorkerSupportsCancellation = true
-
-        };
+        private BackgroundWorker worker;
+        
 
 
         public Standard()
@@ -49,6 +45,12 @@ namespace DataManager.UI_contentPages
             try
             {
                 UserEventArgs holder = new UserEventArgs(files, StartRow.Text, SheetName.Text);
+                worker = new BackgroundWorker
+                {
+                    WorkerReportsProgress = true,
+                    WorkerSupportsCancellation = true
+
+                };
                 worker.DoWork += Worker_DoWork;
                 worker.ProgressChanged += Worker_ProgressChanged;
                 worker.RunWorkerCompleted += Worker_RunWorkerCompleted;
@@ -98,14 +100,13 @@ namespace DataManager.UI_contentPages
             {
                 alert.Close();
                 MessageBox.Show("Error" + e.Error.Message);
-                return;
             }
             else
             {
                 alert.Close();
                 MessageBox.Show("Process Complete! Click OK to close...");
             }
-            //add logic here clear any memory and/or close
+            //add logic here clear any memory and/or close application
         }
 
         private void Worker_DoWork(object sender, DoWorkEventArgs e)
