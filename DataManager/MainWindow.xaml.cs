@@ -12,120 +12,39 @@ namespace DataManager
     /// </summary>
     public partial class MainWindow : Window
     {
-
-        List<string> files = new List<string>();
-        ProgressBarTask alert;
-        BackgroundWorker worker = new BackgroundWorker
-        {
-            WorkerReportsProgress = true,
-            WorkerSupportsCancellation = true
-
-        };
-
-
         public MainWindow()
         {
             InitializeComponent();
-            this.Title = "Data Manager";
         }
 
-        private void SlctFiles_Click(object sender, RoutedEventArgs e)
+        private void Settings_Click(object sender, RoutedEventArgs e)
         {
-            files.Clear();
-            OpenFileDialog choosFiles = new OpenFileDialog
-            {
-                Multiselect = true,
-                Filter = "Excel Files|*.xlsx",
-            };
-            choosFiles.ShowDialog();
-            files.AddRange(choosFiles.FileNames);
-            // updates UI to show files selected
-            NumSelected.Text = $"{files.Count.ToString()} Files";
-            NumSelected.Foreground = Brushes.Black;
+            ChangePageIfNew("UI_contentPages/Settings.xaml", Settings.ToolTip.ToString());
         }
 
-        private void Run_Button_Click(object sender, RoutedEventArgs e)
+        private void Misc_Click(object sender, RoutedEventArgs e)
         {
-            try
-            {
-                UserEventArgs holder = new UserEventArgs(files, StartRow.Text, SheetName.Text);
-                worker.DoWork += Worker_DoWork;
-                worker.ProgressChanged += Worker_ProgressChanged;
-                worker.RunWorkerCompleted += Worker_RunWorkerCompleted;
-
-                // opens progress bar/cancel ui
-                if (worker.IsBusy != true)
-                {
-                    alert = new ProgressBarTask();
-                    // Event handler for cancelbutton
-                    alert.Canceled += new EventHandler<EventArgs>(CancelButton_Click);
-                    alert.Show();
-
-                    worker.RunWorkerAsync(holder);
-                }
-            }
-            catch (ArgumentException ex)
-            {
-                MessageBox.Show(ex.Message);
-                return;
-            }
-            
+            ChangePageIfNew("UI_contentPages/MiscFunctions.xaml", MiscPage.ToolTip.ToString());
         }
 
-        private void CancelButton_Click(object sender, EventArgs e)
+        private void Instructions_Click(object sender, RoutedEventArgs e)
         {
-            if (worker.WorkerSupportsCancellation == true)
-            {
-                
-                worker.CancelAsync();
-                alert.Close();
-            }
-            
+            ChangePageIfNew("UI_contentPages/Instructions.xaml", InstructionsPage.ToolTip.ToString());
         }
 
-        private void Worker_ProgressChanged(object sender, ProgressChangedEventArgs e)
+        private void StandardPage_Click(object sender, RoutedEventArgs e)
         {
-            alert.workStatus.Text = (string)e.UserState;
+            ChangePageIfNew("UI_contentPages/Standard.xaml", StandardPage.ToolTip.ToString());
         }
 
-        private void Worker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
-        {
-            if(e.Cancelled == true)
-            {
-                MessageBox.Show("Canceled by user, app closing");
-            }
-            if (e.Error != null)
-            {
-                alert.Close();
-                MessageBox.Show("Error" + e.Error.Message);
-                return;
-            }
-            else 
-            {
-                alert.Close();
-                MessageBox.Show("Process Complete! Click OK to close...");
-            }
-            this.Close();
-        }
-
-        private void Worker_DoWork(object sender, DoWorkEventArgs e)
+        private void ChangePageIfNew(string pageRequest, string newTitle)
         {
 
-            UserEventArgs unpackThem = (UserEventArgs)e.Argument;
-            SurveyUtilitiesManager manager = new SurveyUtilitiesManager()
+            if (!ContentIsland.Source.ToString().EndsWith(pageRequest))
             {
-                FilesList = unpackThem.file_List,
-                Sheetnames = unpackThem.sheetname_Text,
-                Startrow = unpackThem.startrow_Text
-            };
-
-            // Add feedback to show program is running
-            manager.CheckCancel += (sender1, e1) => e1.Cancel = worker.CancellationPending;
-            manager.ProgressChanged += (s, pe) => worker.ReportProgress(pe.part,pe.statusMessage);
-            manager.MergeDTfromFiles();
+                PageTitle.Content = newTitle;
+                ContentIsland.Navigate(new Uri(pageRequest, UriKind.Relative));
+            }
         }
-
-        
-        
     }
 }

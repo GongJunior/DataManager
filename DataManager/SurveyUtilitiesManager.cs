@@ -78,40 +78,22 @@ namespace DataManager
             string dir = files[0].DirectoryName;
 
             //generates sheet list if necessary
-            List<string> sheets = GenerateSheets(files[0]);
-
-            //create tabke for files that generate errors
-            DataTable errorTable = SurveyUtilities.MakeErrorTable();
-            DataRow errorRow;
-
+            List<string> sheets = GenerateSheets();
 
             //Generate list of DataTables from excel data
             List<DataTable> tables = new List<DataTable>();
+            DataTable errorTable = new DataTable();
             foreach (FileInfo file in files)
             {
-                foreach(string sheet in sheets)
-                {
-                    OnProgressChanged(1, $"Loading {file.Name}...");
+                OnProgressChanged(1, $"Loading {file.Name}...");
 
-                    //if sheet does not exist, add to error table
-                    try
-                    {
-                        tables.Add(SurveyUtilities.GetDTfromExcel(file, Convert.ToInt32(startrow), sheet));
-                        if (OnCheckCancel())
-                        {
-                            return;
-                        }
-                    }
-                    catch (NullReferenceException)
-                    {
-                        errorRow = errorTable.NewRow();
-                        errorRow["File Name"] = file;
-                        errorRow["Sheet Name"] = sheet;
-                        errorRow["Message"] = "Sheet not found";
-                        errorTable.Rows.Add(errorRow);
-                    }
+                var package = SurveyUtilities.GetDTfromExcel(file, Convert.ToInt32(startrow), sheets);
+                tables.AddRange(package.data);
+                errorTable.Merge(package.errors);
+                if (OnCheckCancel())
+                {
+                    return;
                 }
-                
             }
 
             //Combine all tables into first table in list
@@ -129,7 +111,7 @@ namespace DataManager
             OnProgressChanged(3,"Sending to Excel...");
             try
             {
-                SurveyUtilities.DTtoExcel(tables[0], dir);
+                SurveyUtilities.DTtoExcel(tables[0], dir,errorTable);
             }
             catch(ArgumentOutOfRangeException e)
             {
@@ -137,11 +119,14 @@ namespace DataManager
             }
             
         }
-        private List<string> GenerateSheets(FileInfo file)
+
+
+        private List<string> GenerateSheets()
         {
             if (sheetnames.ToLower() == "allsheets")
             {
-                List<string> sheets = SurveyUtilities.GetSheets(file);
+                List<string> sheets = new List<string>();
+                sheets.Add("allsheets");
                 return sheets;
             }
             else
@@ -150,7 +135,6 @@ namespace DataManager
                 return sheets;
             }
         }
-
         private List<FileInfo> StringToFileInfo(List<string> stringList)
         {
 
@@ -162,7 +146,6 @@ namespace DataManager
             }
             return files;
         }
-
         private List<string> Splitter()
         {
             Char delimiter = ',';
@@ -174,7 +157,6 @@ namespace DataManager
             }
             return sheetList;
         }
-
         #endregion
 
         #region EVENTS

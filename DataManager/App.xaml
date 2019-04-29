@@ -4,6 +4,20 @@
              xmlns:local="clr-namespace:DataManager"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-         
+        <!-- Panel Button Style-->
+        <Style x:Key="LeftPanelButtonStyle" TargetType="{x:Type Button}">
+            <Setter Property="Width" Value="40"/>
+            <Setter Property="Height" Value="40"/>
+            <Setter Property="HorizontalAlignment" Value="Left"/>
+            <Setter Property="Padding" Value="10"/>
+            <Setter Property="Background" Value="#51555b"/>
+            <Setter Property="BorderThickness" Value="0"/>
+        </Style>
+        
+        <!--Page Format Style-->
+        <Style x:Key="PageFormats" TargetType="{x:Type Page}">
+            <Setter Property="Width" Value="350"/>
+            <Setter Property="Height" Value="535"/>
+        </Style>
     </Application.Resources>
 </Application>

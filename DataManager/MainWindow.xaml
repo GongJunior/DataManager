@@ -5,43 +5,37 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:DataManager"
         mc:Ignorable="d"
-        Title="MainWindow" Height="125" Width="400" ResizeMode="NoResize" SizeToContent="WidthAndHeight" Topmost="False" WindowState="Normal" Icon="./Resources/appicon.ico">
-    <Window.Resources>
-        <local:SurveyUtilitiesManager x:Key="myDataSource"/>
-        <Style x:Key="TextBoxInError" TargetType="TextBox">
-            <Style.Triggers>
-                <Trigger Property="Validation.HasError" Value="true">
-                    <Setter Property="ToolTip" Value="{Binding RelativeSource={x:Static RelativeSource.Self},Path=(Validation.Errors)[0].ErrorContent}"/>
-                </Trigger>
-            </Style.Triggers>
-        </Style>
-    </Window.Resources>
-    <Canvas Background="DimGray" Width="400" Height="125">
-        <Button x:Name="OpenFld" Content="Select Files" HorizontalAlignment="Center" VerticalAlignment="Top" Width="75" Click="SlctFiles_Click" Canvas.Left="306" Canvas.Top="10"/>
-        <Button Content="RUN" Canvas.Left="306" Canvas.Top="46" Width="75" Click="Run_Button_Click" RenderTransformOrigin="2.1,-10.849"/>
+        Title="Data Manager" Height="600" Width="400" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" Topmost="False" WindowState="Normal" Icon="./Resources/appicon.ico" Background="#51555b">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50"/>
+            <RowDefinition/>
+            <RowDefinition Height="15"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="50"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <DockPanel Grid.Row="1" Grid.Column="0" LastChildFill="False">
+            <Button x:Name="StandardPage" ToolTip="Combining" Click="StandardPage_Click" DockPanel.Dock="Top" Style="{StaticResource LeftPanelButtonStyle}">
+                <Image Source="resources/StdImage.bmp"/>
+            </Button>
+            <Separator/>
+            <Button x:Name="InstructionsPage" ToolTip="Instructions" Click="Instructions_Click" DockPanel.Dock="Top" Style="{StaticResource LeftPanelButtonStyle}">
+                <Image Source="resources/AddDictionary.png"/>
+            </Button>
+            <Separator/>
+            <Button x:Name="MiscPage" ToolTip="Miscellaneous" Click="Misc_Click" DockPanel.Dock="Top" Style="{StaticResource LeftPanelButtonStyle}" VerticalAlignment="Top">
+                <Image Source="resources/instrux.bmp"/>
+            </Button>
+            <Button x:Name="Settings" ToolTip="Settings" Click="Settings_Click" DockPanel.Dock="Bottom" Style="{StaticResource LeftPanelButtonStyle}">
+                <Image Source="resources/Settings.png"/>
+            </Button>
+        </DockPanel>
+        <DockPanel Grid.Row="2" Grid.ColumnSpan="2" Background="#4286f4">
 
-        <TextBox x:Name="StartRow" Style="{StaticResource TextBoxInError}" HorizontalAlignment="Center" VerticalAlignment="Center" Height="25" Width="200" Grid.Row="1" Canvas.Left="101" Canvas.Top="41">
-            <TextBox.Text>
-                <Binding Path="Startrow" Source="{StaticResource myDataSource}" ValidatesOnExceptions="True" UpdateSourceTrigger="LostFocus">
-                    <Binding.ValidationRules>
-                        <DataErrorValidationRule/>
-                    </Binding.ValidationRules>
-                </Binding>
-            </TextBox.Text>
-        </TextBox>
-        <TextBox x:Name="SheetName" Style="{StaticResource TextBoxInError}" Height="25" Canvas.Left="101" TextWrapping="Wrap" Canvas.Top="10" Width="200">
-            <TextBox.Text>
-                <Binding Path="Sheetnames" Source="{StaticResource myDataSource}" ValidatesOnExceptions="True" UpdateSourceTrigger="LostFocus">
-                    <Binding.ValidationRules>
-                        <DataErrorValidationRule/>
-                    </Binding.ValidationRules>
-                </Binding>
-            </TextBox.Text>
-        </TextBox>
-
-        <Label Content="Start Row" HorizontalAlignment="Left" Grid.Row="1" VerticalAlignment="Top" RenderTransformOrigin="-0.084,-0.351" Canvas.Left="10" Canvas.Top="40"/>
-        <Label Content="Sheet Name(s)" Canvas.Left="10" Canvas.Top="10" />
-
-        <TextBlock x:Name="NumSelected" Canvas.Left="321" TextWrapping="NoWrap" Canvas.Top="29" RenderTransformOrigin="-0.116,0.062" Height="15" Width="45" FontSize="12" Text="0 files!" Foreground="#FFC80000"/>
-    </Canvas>
+        </DockPanel>
+        <Label x:Name="PageTitle" Grid.Column="1" Grid.Row="0" HorizontalAlignment="Center" FontSize="25">Standard Page</Label>
+        <Frame Grid.Column="1" Grid.Row="1" Name="ContentIsland" Source="UI_contentPages/Standard.xaml" NavigationUIVisibility="Hidden"/>
+    </Grid>
 </Window>
