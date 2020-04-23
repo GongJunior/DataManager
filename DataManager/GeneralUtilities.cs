@@ -3,7 +3,7 @@ using System.Text.RegularExpressions;
 
 namespace DataManager
 {
-    public struct UserEventArgs
+    class UserEventArgs
     {
         // setup to handle args to do work
         public string startrow_Text, sheetname_Text;
@@ -33,5 +33,42 @@ namespace DataManager
             }
             else throw new System.ArgumentException("Sheet required!");
         }
+    }
+
+    class GuiReader
+    {
+        #region PROPERTIES
+        private string startrow_text;
+        private string sheetname_text;
+        private List<string> file_list;
+        private List<string> pw_list;
+
+        public string Startrow_text
+        {
+            get => startrow_text;
+            set => startrow_text = value;
+        }
+        public string Sheetname_text
+        {
+            get => sheetname_text;
+            set => sheetname_text = value;
+        }
+        public List<string> File_list
+        {
+            get => file_list;
+            set => file_list = value;
+        }
+        public List<string> PW_list
+        {
+            get => pw_list;
+            set => pw_list = value;
+        }
+
+        public void ValidateInput()
+        {
+
+        }
+
+        #endregion
     }
 }

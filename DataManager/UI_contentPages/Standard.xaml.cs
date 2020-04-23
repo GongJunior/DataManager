@@ -5,6 +5,8 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using Microsoft.Win32;
 using System.ComponentModel;
+using System.Collections.ObjectModel;
+using DataManager.ViewModels;
 
 namespace DataManager.UI_contentPages
 {
@@ -13,7 +15,7 @@ namespace DataManager.UI_contentPages
     /// </summary>
     public partial class Standard : Page
     {
-        List<string> files = new List<string>();
+        StandardViewModel vm = new StandardViewModel();
         ProgressBarTask alert;
         private BackgroundWorker worker;
         
@@ -23,20 +25,21 @@ namespace DataManager.UI_contentPages
         {
             InitializeComponent();
             this.Title = "Data Manager";
+            passwords.DataContext = vm;
         }
 
         private void SlctFiles_Click(object sender, RoutedEventArgs e)
         {
-            files.Clear();
+            vm.File_list.Clear();
             OpenFileDialog choosFiles = new OpenFileDialog
             {
                 Multiselect = true,
                 Filter = "Excel Files|*.xlsx;*.xls|Crosstab|*.xlsx;*.xls;*.csv|CSV files (*.csv)|*.csv",
             };
             choosFiles.ShowDialog();
-            files.AddRange(choosFiles.FileNames);
+            vm.File_list.AddRange(choosFiles.FileNames);
             // updates UI to show files selected
-            NumSelected.Text = $"{files.Count.ToString()} Files";
+            NumSelected.Text = $"{vm.File_list.Count} Files";
             NumSelected.Foreground = Brushes.Black;
         }
 
@@ -44,7 +47,9 @@ namespace DataManager.UI_contentPages
         {
             try
             {
-                UserEventArgs holder = new UserEventArgs(files, StartRow.Text, SheetName.Text);
+
+                vm.Startrow_text = StartRow.Text;
+                vm.Sheetname_text = SheetName.Text;
                 worker = new BackgroundWorker
                 {
                     WorkerReportsProgress = true,
@@ -63,7 +68,7 @@ namespace DataManager.UI_contentPages
                     alert.Canceled += new EventHandler<EventArgs>(CancelButton_Click);
                     alert.Show();
 
-                    worker.RunWorkerAsync(holder);
+                    worker.RunWorkerAsync(vm);
                 }
             }
             catch (ArgumentException ex)
@@ -112,18 +117,24 @@ namespace DataManager.UI_contentPages
         private void Worker_DoWork(object sender, DoWorkEventArgs e)
         {
 
-            UserEventArgs unpackThem = (UserEventArgs)e.Argument;
+            StandardViewModel unpackThem = (StandardViewModel)e.Argument;
             SurveyUtilitiesManager manager = new SurveyUtilitiesManager()
             {
-                FilesList = unpackThem.file_List,
-                Sheetnames = unpackThem.sheetname_Text,
-                Startrow = unpackThem.startrow_Text
+                FilesList = unpackThem.File_list,
+                Sheetnames = unpackThem.Sheetname_text,
+                Startrow = unpackThem.Startrow_text
             };
 
             // Add feedback to show program is running
             manager.CheckCancel += (sender1, e1) => e1.Cancel = worker.CancellationPending;
             manager.ProgressChanged += (s, pe) => worker.ReportProgress(pe.part, pe.statusMessage);
             manager.MergeDTfromFiles();
+        }
+
+        private void addpw_Click(object sender, RoutedEventArgs e)
+        {
+            vm.PW_list.Add(pw.Text);
+            pw.Text = null;
         }
     }
 }

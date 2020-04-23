@@ -4,6 +4,7 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:DataManager"
+      xmlns:ui="clr-namespace:DataManager.ViewModels"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
       Style="{StaticResource PageFormats}"
@@ -11,6 +12,7 @@
 
     <Page.Resources>
         <local:SurveyUtilitiesManager x:Key="myDataSource"/>
+        <ui:StandardViewModel x:Key="vm"/>
         <Style x:Key="TextBoxInError" TargetType="TextBox">
             <Style.Triggers>
                 <Trigger Property="Validation.HasError" Value="true">
@@ -38,6 +40,11 @@
         <Button Grid.Column="3" Grid.Row="2" VerticalAlignment="Bottom" Height="25" Width="25" Click="Run_Button_Click" Margin="30,0,32,59">
             <Image Source="/Resources/run.png"/>
         </Button>
+        <Button x:Name="addpw" Grid.Column="2" Grid.Row="0" Height="25" Width="25" VerticalAlignment="Bottom" HorizontalAlignment="Center" Margin="0,0,0,50" Click="addpw_Click">
+            <Image Source="/Resources/add.png"/>
+        </Button>
+
+        <ListBox x:Name="passwords" Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="2" ItemsSource="{Binding PW_list}"/>
 
         <TextBox x:Name="StartRow" Grid.Column="1" Grid.Row="0" Style="{StaticResource TextBoxInError}" HorizontalAlignment="Left" VerticalAlignment="Center" Height="25" Width="25" Margin="0,39,0,114">
             <TextBox.Text>
@@ -48,7 +55,7 @@
                 </Binding>
             </TextBox.Text>
         </TextBox>
-        <TextBox x:Name="SheetName" Grid.Column="1" Grid.Row="0" Style="{StaticResource TextBoxInError}" Height="25" HorizontalAlignment="Left" VerticalAlignment="Center"  TextWrapping="Wrap" Width="100" Margin="0,59,0,74">
+        <TextBox x:Name="SheetName" Grid.Column="1" Grid.Row="0" Grid.ColumnSpan="2" Style="{StaticResource TextBoxInError}" Height="25" HorizontalAlignment="Left" VerticalAlignment="Center"  TextWrapping="Wrap" Width="100" Margin="0,59,0,74">
             <TextBox.Text>
                 <Binding Path="Sheetnames" Source="{StaticResource myDataSource}" ValidatesOnExceptions="True" UpdateSourceTrigger="LostFocus">
                     <Binding.ValidationRules>
@@ -57,9 +64,11 @@
                 </Binding>
             </TextBox.Text>
         </TextBox>
+        <TextBox x:Name="pw" Grid.Column="1" Grid.Row="0" Grid.ColumnSpan="2" Height="25" Width="100" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="0,0,0,50"/>
 
         <Label Content="Start Row" HorizontalAlignment="Left" Grid.Row="0" Margin="0,39,0,114" VerticalAlignment="Center"/>
         <Label Content="Sheet Name(s)" Grid.Column="0" Grid.Row="0" Margin="0,59,0,74" VerticalAlignment="Center"/>
+        <Label Content="Password(s)" Grid.Column="0" Grid.Row="0" HorizontalAlignment="Left" VerticalAlignment="Bottom" Grid.ColumnSpan="2" Margin="0,0,0,50"/>
 
         <TextBlock x:Name="NumSelected" Grid.Row="0" TextWrapping="NoWrap" Height="15" Width="45" FontSize="12" Text="0 files!" Foreground="#FFC80000" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="43,14,0,0"/>
     </Grid>
