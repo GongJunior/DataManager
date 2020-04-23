@@ -12,7 +12,6 @@
 
     <Page.Resources>
         <local:SurveyUtilitiesManager x:Key="myDataSource"/>
-        <ui:StandardViewModel x:Key="vm"/>
         <Style x:Key="TextBoxInError" TargetType="TextBox">
             <Style.Triggers>
                 <Trigger Property="Validation.HasError" Value="true">
@@ -43,8 +42,35 @@
         <Button x:Name="addpw" Grid.Column="2" Grid.Row="0" Height="25" Width="25" VerticalAlignment="Bottom" HorizontalAlignment="Center" Margin="0,0,0,50" Click="addpw_Click">
             <Image Source="/Resources/add.png"/>
         </Button>
+        <Button x:Name="RmAllPW" Grid.Column="2" Grid.Row="0" Height="25" Width="25" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="0,0,0,50" Click="RmAllPW_Click">
+            <Image Source="/Resources/remove.png"/>
+        </Button>
 
-        <ListBox x:Name="passwords" Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="2" ItemsSource="{Binding PW_list}"/>
+        <ListBox x:Name="passwords" Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" Height="40" Margin="10,0" VerticalAlignment="Bottom" ItemsSource="{Binding PW_list}" HorizontalContentAlignment="Stretch" >
+            <ListBox.ItemContainerStyle>
+                <Style TargetType="ListBoxItem">
+                    <Style.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="IsSelected" Value="True"/>
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </ListBox.ItemContainerStyle>
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <Grid Margin="0,2">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="15"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="{Binding}"/>
+                        <Button Grid.Column="1" Click="pwrm_Click" Height="10">
+                            <Image Source="/Resources/remove.png"/>
+                        </Button>
+                    </Grid>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
 
         <TextBox x:Name="StartRow" Grid.Column="1" Grid.Row="0" Style="{StaticResource TextBoxInError}" HorizontalAlignment="Left" VerticalAlignment="Center" Height="25" Width="25" Margin="0,39,0,114">
             <TextBox.Text>

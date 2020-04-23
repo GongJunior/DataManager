@@ -176,7 +176,6 @@
     <Compile Include="DataSource.cs" />
     <Compile Include="DataSourceInterpreter.cs" />
     <Compile Include="ExcelDataSource.cs" />
-    <Compile Include="GeneralUtilities.cs" />
     <Compile Include="ProgressBarTask.xaml.cs" />
     <Compile Include="UI_contentPages\MiscFunctions.xaml.cs">
       <DependentUpon>MiscFunctions.xaml</DependentUpon>
@@ -291,6 +290,9 @@
   <ItemGroup>
     <Resource Include="Resources\add.png" />
     <Resource Include="Resources\add2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\remove.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

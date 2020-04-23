@@ -26,6 +26,8 @@ namespace DataManager.UI_contentPages
             InitializeComponent();
             this.Title = "Data Manager";
             passwords.DataContext = vm;
+            vm.PW_list.Add("thing1");
+            vm.PW_list.Add("thing2");
         }
 
         private void SlctFiles_Click(object sender, RoutedEventArgs e)
@@ -133,8 +135,21 @@ namespace DataManager.UI_contentPages
 
         private void addpw_Click(object sender, RoutedEventArgs e)
         {
-            vm.PW_list.Add(pw.Text);
-            pw.Text = null;
+            if(pw.Text != "")
+            {
+                vm.PW_list.Add(pw.Text);
+                pw.Text = null;
+            }
+        }
+
+        private void pwrm_Click(object sender, RoutedEventArgs e)
+        {
+            vm.PW_list.Remove(passwords.SelectedItem.ToString());
+        }
+
+        private void RmAllPW_Click(object sender, RoutedEventArgs e)
+        {
+            vm.PW_list.Clear();
         }
     }
 }
