@@ -119,13 +119,8 @@ namespace DataManager.UI_contentPages
         private void Worker_DoWork(object sender, DoWorkEventArgs e)
         {
 
-            StandardViewModel unpackThem = (StandardViewModel)e.Argument;
-            SurveyUtilitiesManager manager = new SurveyUtilitiesManager()
-            {
-                FilesList = unpackThem.File_list,
-                Sheetnames = unpackThem.Sheetname_text,
-                Startrow = unpackThem.Startrow_text
-            };
+            StandardViewModel vm_pack = (StandardViewModel)e.Argument;
+            SurveyUtilitiesManager manager = new SurveyUtilitiesManager(vm_pack);
 
             // Add feedback to show program is running
             manager.CheckCancel += (sender1, e1) => e1.Cancel = worker.CancellationPending;

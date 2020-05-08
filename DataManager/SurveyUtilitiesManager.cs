@@ -1,18 +1,21 @@
-﻿using System;
+﻿using DataManager.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.IO;
+using System.Linq;
 using System.Text.RegularExpressions;
 
 namespace DataManager
 {
-    class SurveyUtilitiesManager : IDataErrorInfo
+    public class SurveyUtilitiesManager : IDataErrorInfo
     {
         #region PROPERTIES
         private List<string> filesList;
         private string startrow;
         private string sheetnames;
+        private List<string> passwords;
 
         public List<string> FilesList
         {
@@ -29,7 +32,30 @@ namespace DataManager
             get => sheetnames;
             set => sheetnames = value;
         }
+        public List<string> Passwords
+        {
+            get => passwords;
+            set => passwords = value;
+        }
 
+        #endregion
+
+        #region CONSTRUCTORS
+        public SurveyUtilitiesManager()
+        {
+
+        }
+
+        public SurveyUtilitiesManager(StandardViewModel vm)
+        {
+            filesList = vm.File_list;
+            startrow = vm.Startrow_text;
+            sheetnames = vm.Sheetname_text;
+            if (!(vm.PW_list is null))
+            {
+                passwords = vm.PW_list.ToList();
+            }
+        }
         #endregion
 
         #region VALIDATION
@@ -87,7 +113,7 @@ namespace DataManager
             {
                 OnProgressChanged(1, $"Loading {file.Name}...");
 
-                var package = SurveyUtilities.GetDTfromExcel(file, Convert.ToInt32(startrow), sheets);
+                var package = SurveyUtilities.GetDTfromExcel(file, Convert.ToInt32(startrow), sheets, passwords);
                 tables.AddRange(package.data);
                 errorTable.Merge(package.errors);
                 if (OnCheckCancel())

@@ -1,7 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Data;
 using System.IO;
 using ExcelDataReader;
+using ExcelDataReader.Exceptions;
 
 namespace DataManager
 {
@@ -11,6 +13,7 @@ namespace DataManager
         private List<string> actualSheets = new List<string>();
         private List<string> requestedSheets = new List<string>();
         private bool UseAllSheets;
+        private List<string> possiblePasswords = new List<string>();
 
         public ExcelDataSource(FileInfo location, List<string> requestedSheets,int startingRow):base()
         {
@@ -19,12 +22,21 @@ namespace DataManager
             this.requestedSheets = requestedSheets;
             UseAllSheets = (requestedSheets[0] == "allsheets") ? true : false;
         }
+        public ExcelDataSource(FileInfo location, List<string> requestedSheets,int startingRow, List<string> passwords):base()
+        {
+            this.startingRow = startingRow;
+            this.location = location;
+            this.requestedSheets = requestedSheets;
+            UseAllSheets = (requestedSheets[0] == "allsheets") ? true : false;
+            possiblePasswords = passwords;
+        }
 
         public override (List<DataTable> data, DataTable errors) ParseData()
         {
+            var config = TryPossiblePasswords();
             using (var stream = File.Open(location.FullName, FileMode.Open, FileAccess.Read))
             {
-                using (var reader = ExcelReaderFactory.CreateReader(stream))
+                using (var reader = ExcelReaderFactory.CreateReader(stream,config))
                 {
                     do
                     {
@@ -73,6 +85,30 @@ namespace DataManager
             }
             errorTable = RequestedSheetsCheck(errorTable, actualSheets, requestedSheets, location.Name);
             return (tables, errorTable);
+        }
+        private ExcelReaderConfiguration TryPossiblePasswords()
+        {
+            foreach (var pw in possiblePasswords)
+            {
+                try
+                {
+                    var config = new ExcelReaderConfiguration() { Password = pw };
+                    using (var stream = File.Open(location.FullName, FileMode.Open, FileAccess.Read))
+                    {
+                        using (var reader = ExcelReaderFactory.CreateReader(stream, config))
+                        {
+
+                        }
+                    }
+                    return config;
+                }
+                catch (InvalidPasswordException)
+                {
+
+                    continue;
+                }
+            }
+            return new ExcelReaderConfiguration();
         }
     }
 }

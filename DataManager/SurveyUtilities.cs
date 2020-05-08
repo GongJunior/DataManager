@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Data;
 using System.IO;
+using System.Runtime.InteropServices;
 using OfficeOpenXml;
 
 namespace DataManager
@@ -9,21 +10,20 @@ namespace DataManager
     {
         #region FromFileToDT
         
-        public static (List<DataTable> data, DataTable errors) GetDTfromExcel(FileInfo fullFilePath, int startRow, List<string> requsetedSheets)
+        public static (List<DataTable> data, DataTable errors) GetDTfromExcel(FileInfo fullFilePath, int startRow, List<string> requsetedSheets, List<string> passwords)
         {
-            DataSource data = ValidateDataSource(fullFilePath, startRow, requsetedSheets);
+            DataSource data = ValidateDataSource(fullFilePath, startRow, requsetedSheets, passwords);
             DataSourceInterpreter interprety = new DataSourceInterpreter(data);
             return interprety.ReadData();
         }
 
-        private static DataSource ValidateDataSource(FileInfo fullFilePath, int startRow, List<string> requsetedSheets)
+        private static DataSource ValidateDataSource(FileInfo fullFilePath, int startRow, List<string> requsetedSheets, List<string> passwords)
         {
             if (fullFilePath.Name.ToLower().EndsWith(".csv"))
             {
                 return new CsvDataSource(fullFilePath, startRow);
             }
-            
-            return new ExcelDataSource(fullFilePath, requsetedSheets, startRow);
+            return new ExcelDataSource(fullFilePath, requsetedSheets, startRow, passwords);
         }
         #endregion
 
@@ -58,6 +58,12 @@ namespace DataManager
 
                 //should join dir + filename for finFile
                 string tempFile = Path.Combine(loc, "RESULT.xlsx");
+                var i = 1;
+                while (File.Exists(tempFile))
+                {
+                    tempFile = (tempFile.EndsWith("RESULT.xlsx")) ? tempFile.Replace("RESULT.xlsx", $"RESULT({i}).xlsx") : tempFile.Replace($"RESULT({i-1}).xlsx", $"RESULT({i}).xlsx");
+                    i++;
+                }
                 FileInfo finFile = new FileInfo(tempFile);
                 if (finFile.Exists) finFile.Delete();
                 pkg.SaveAs(finFile);

@@ -8,7 +8,7 @@ using System.Collections.ObjectModel;
 
 namespace DataManager.ViewModels
 {
-    class StandardViewModel : INotifyPropertyChanged
+    public class StandardViewModel : INotifyPropertyChanged
     {
         private string startrow_text;
         private string sheetname_text;
