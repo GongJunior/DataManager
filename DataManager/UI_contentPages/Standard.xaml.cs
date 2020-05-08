@@ -26,8 +26,6 @@ namespace DataManager.UI_contentPages
             InitializeComponent();
             this.Title = "Data Manager";
             passwords.DataContext = vm;
-            vm.PW_list.Add("thing1");
-            vm.PW_list.Add("thing2");
         }
 
         private void SlctFiles_Click(object sender, RoutedEventArgs e)
