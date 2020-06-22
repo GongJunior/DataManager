@@ -1,0 +1,48 @@
+﻿<Window x:Class="DMCoreGUI.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:DMCoreGUI"
+        mc:Ignorable="d"
+        Title="Data Manager" Height="600" Width="400" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" Topmost="False" WindowState="Normal" Icon=".\resources\pf.ico">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50"/>
+            <RowDefinition/>
+            <RowDefinition Height="15"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="50"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+
+        <!--Left panel controls-->
+        <DockPanel Grid.Row="1" Grid.Column="0" LastChildFill="False">
+            <Button x:Name="StandardPage" ToolTip="Combining" DockPanel.Dock="Top" Style="{StaticResource LeftPanelButtonStyle}">
+                <Image Source="resources/server.png"/>
+            </Button>
+            <Separator/>
+            <Button x:Name="InstructionsPage" ToolTip="Instructions" DockPanel.Dock="Top" Style="{StaticResource LeftPanelButtonStyle}">
+                <Image Source="resources/server.png"/>
+            </Button>
+            <Separator/>
+            <Button x:Name="MiscPage" ToolTip="Miscellaneous" DockPanel.Dock="Top" Style="{StaticResource LeftPanelButtonStyle}" VerticalAlignment="Top">
+                <Image Source="resources/server.png"/>
+            </Button>
+            <Button x:Name="Settings" ToolTip="Settings" DockPanel.Dock="Bottom" Style="{StaticResource LeftPanelButtonStyle}">
+                <Image Source="resources/settings.png"/>
+            </Button>
+        </DockPanel>
+
+        <!--Botton Info Panel-->
+        <DockPanel Grid.Row="2" Grid.ColumnSpan="2" Background="#4286f4">
+
+        </DockPanel>
+
+        <Label x:Name="PageTitle" Grid.Column="1" Grid.Row="0" HorizontalAlignment="Center" FontSize="25">Standard Page</Label>
+
+        <!--Island for holding page references-->
+        <Frame Grid.Column="1" Grid.Row="1" Name="ContentIsland" Source="" NavigationUIVisibility="Hidden"/>
+    </Grid>
+</Window>
