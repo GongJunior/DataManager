@@ -7,7 +7,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="resources\add.png" />
+    <None Remove="resources\FindinFiles.png" />
     <None Remove="resources\pf.ico" />
+    <None Remove="resources\remove.png" />
+    <None Remove="resources\run.png" />
     <None Remove="resources\server.png" />
     <None Remove="resources\settings.png" />
   </ItemGroup>
@@ -20,6 +24,21 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="resources\settings.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="resources\add.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="resources\FindinFiles.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="resources\remove.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="resources\run.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

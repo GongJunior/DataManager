@@ -43,6 +43,6 @@
         <Label x:Name="PageTitle" Grid.Column="1" Grid.Row="0" HorizontalAlignment="Center" FontSize="25">Standard Page</Label>
 
         <!--Island for holding page references-->
-        <Frame Grid.Column="1" Grid.Row="1" Name="ContentIsland" Source="" NavigationUIVisibility="Hidden"/>
+        <Frame Grid.Column="1" Grid.Row="1" Name="ContentIsland" Source="View/Standard.xaml" NavigationUIVisibility="Hidden"/>
     </Grid>
 </Window>
