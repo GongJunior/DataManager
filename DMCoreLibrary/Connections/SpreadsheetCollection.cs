@@ -1,4 +1,5 @@
-﻿using DMCoreLibrary.Spreadsheets;
+﻿using DMCoreLibrary.Events;
+using DMCoreLibrary.Spreadsheets;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -7,9 +8,11 @@ using System.Text;
 
 namespace DMCoreLibrary.Connections
 {
-    class SpreadsheetCollection
+    partial class SpreadsheetCollection
     {
         private SpreadsheetCollectionOptions Options { get; }
+        public event EventHandler<CancelEventArgs>? CheckCancel;
+        public event EventHandler<ProgressChangedEventArgs>? ProgressChanged;
 
         public SpreadsheetCollection(SpreadsheetCollectionOptions collectionOptions)
         {
@@ -103,44 +106,25 @@ namespace DMCoreLibrary.Connections
             return sheetList;
         }
 
-        public event EventHandler<CancelEventArgs> CheckCancel;
         protected virtual bool OnCheckCancel()
         {
-            EventHandler<CancelEventArgs> handler = CheckCancel;
+            EventHandler<CancelEventArgs>? handler = CheckCancel;
             if (handler != null)
             {
                 CancelEventArgs e = new CancelEventArgs();
                 handler(this, e);
                 return e.Cancel;
             }
-
             return false;
         }
 
-        public class CancelEventArgs : EventArgs
-        {
-            public bool Cancel { get; set; }
-        }
 
-
-        public event EventHandler<ProgressChangedEventArgs> ProgressChanged;
         protected virtual void OnProgressChanged(int part, string message)
         {
-            EventHandler<ProgressChangedEventArgs> handler = ProgressChanged;
+            EventHandler<ProgressChangedEventArgs>? handler = ProgressChanged;
             if (ProgressChanged != null)
             {
                 handler(this, new ProgressChangedEventArgs(part, message));
-            }
-        }
-
-        public class ProgressChangedEventArgs : EventArgs
-        {
-            public string statusMessage;
-            public int part;
-            public ProgressChangedEventArgs(int part, string statusMessage)
-            {
-                this.statusMessage = statusMessage;
-                this.part = part;
             }
         }
 
