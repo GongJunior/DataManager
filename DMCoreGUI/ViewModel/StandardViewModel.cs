@@ -3,6 +3,7 @@ using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Text.RegularExpressions;
 using System.Collections.ObjectModel;
+using Microsoft.Win32;
 
 namespace DMCoreGUI.ViewModel
 {
@@ -70,5 +71,11 @@ namespace DMCoreGUI.ViewModel
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
         }
+        public OpenFileDialog ChooseFiles { get; } = new OpenFileDialog
+        {
+            Multiselect = true,
+            Filter = "Excel Files|*.xlsx;*.xls|Crosstab|*.xlsx;*.xls;*.csv|CSV files (*.csv)|*.csv",
+        };
+
     }
 }

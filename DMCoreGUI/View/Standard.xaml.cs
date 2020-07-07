@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 using DMCoreGUI.ViewModel;
 
 namespace DMCoreGUI.View
@@ -16,10 +17,18 @@ namespace DMCoreGUI.View
         public Standard()
         {
             InitializeComponent();
+            passwords.DataContext = vm;
         }
 
         private void SlctFiles_Click(object sender, RoutedEventArgs e)
         {
+            vm.File_list.Clear();
+            vm.ChooseFiles.ShowDialog();
+            vm.File_list.AddRange(vm.ChooseFiles.FileNames);
+
+            NumSelected.Text = $"{vm.File_list.Count} Files";
+            NumSelected.Foreground = Brushes.Black;
+
         }
 
         private void Run_Button_Click(object sender, RoutedEventArgs e)
