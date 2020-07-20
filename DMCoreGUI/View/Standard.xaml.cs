@@ -1,8 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using DMCoreGUI.ViewModel;
+using DMCoreLibrary.Models;
 
 namespace DMCoreGUI.View
 {
@@ -11,53 +15,72 @@ namespace DMCoreGUI.View
     /// </summary>
     public partial class Standard : Page
     {
-        StandardViewModel vm = new StandardViewModel();
+        private StandardViewModel vm = new StandardViewModel();
+        private StandardProgressWindow progressWindow;
 
 
         public Standard()
         {
             InitializeComponent();
-            passwords.DataContext = vm;
+            DataContext = vm;
         }
 
         private void SlctFiles_Click(object sender, RoutedEventArgs e)
         {
-            vm.File_list.Clear();
+            vm.Files.Clear();
             vm.ChooseFiles.ShowDialog();
-            vm.File_list.AddRange(vm.ChooseFiles.FileNames);
+            vm.Files.AddRange(vm.ChooseFiles.FileNames);
 
-            NumSelected.Text = $"{vm.File_list.Count} Files";
+            NumSelected.Text = $"{vm.Files.Count} Files";
             NumSelected.Foreground = Brushes.Black;
-
         }
 
-        private void Run_Button_Click(object sender, RoutedEventArgs e)
+        private async void Run_Button_Click(object sender, RoutedEventArgs e)
         {
+            try
+            {
+                if (vm.InputIsValid)
+                {
+                    vm.IsButtonEnabled = false;
+                    progressWindow?.Close();
+                    var cancelSource = new CancellationTokenSource();
+                    progressWindow = new StandardProgressWindow(new Progress<SpreadsheetCollectionProgressModel>(), cancelSource);
+                    await Task.Run(() => vm.MergeSpreadsheets(progressWindow.Progress, cancelSource.Token));
+                    progressWindow.output.Text += "Process completed";
+                    progressWindow.Unsubscribe();
+                    vm.IsButtonEnabled = true;
+                }
+                else
+                {
+                    MessageBox.Show($"Failed! Row:{vm.StartRow} Sheet:{vm.SheetName} Files:{vm.Files.Count}");
+                }
+            }
+            catch (OperationCanceledException)
+            {
+                progressWindow.output.Text += "Process cancelled";
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("Something went really wrong...");
+            }
         }
-
-        private void CancelButton_Click(object sender, EventArgs e)
-        {
-        }
-
         private void Addpw_Click(object sender, RoutedEventArgs e)
         {
             if (pw.Text != "")
             {
-                vm.PW_list.Add(pw.Text);
+                vm.Passwords.Add(pw.Text);
                 pw.Text = null;
             }
         }
 
         private void Pwrm_Click(object sender, RoutedEventArgs e)
         {
-            vm.PW_list.Remove(passwords.SelectedItem.ToString());
+            vm.Passwords.Remove(passwords.SelectedItem.ToString());
         }
 
         private void RmAllPW_Click(object sender, RoutedEventArgs e)
         {
-            vm.PW_list.Clear();
+            vm.Passwords.Clear();
         }
-
-
     }
 }

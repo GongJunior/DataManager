@@ -4,78 +4,123 @@ using System.Runtime.CompilerServices;
 using System.Text.RegularExpressions;
 using System.Collections.ObjectModel;
 using Microsoft.Win32;
+using System.Threading.Tasks;
+using DMCoreLibrary.Connections;
+using System.Linq;
+using DMCoreLibrary.Models;
+using System;
+using System.Threading;
 
 namespace DMCoreGUI.ViewModel
 {
     public class StandardViewModel : INotifyPropertyChanged
     {
-        private string startrow_text;
-        private string sheetname_text;
-        private List<string> file_list = new List<string>();
-        private ObservableCollection<string> pw_list = new ObservableCollection<string>();
+        public string StartRow { get; set; }
+        public string SheetName { get; set; }
+        public List<string> Files = new List<string>();
+        private ObservableCollection<string> _passwords = new ObservableCollection<string>();
+        private bool _isButtonEnabled = true;
+        private SpreadsheetCollectionOptions Options
+        {
+            get
+            {
+                return new SpreadsheetCollectionOptions()
+                {
+                    Files = this.Files,
+                    StartRow = this.StartRow,
+                    Sheets = SheetName,
+                    Passwords = this.Passwords.ToList()
+                };
+            }
+        }
+        public bool InputIsValid
+        {
+            get => ValidateInput();
+        }
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public string Startrow_text
+        public ObservableCollection<string> Passwords
         {
-            get => startrow_text;
+            get => _passwords;
             set
             {
-                if (!string.IsNullOrEmpty(value))
-                {
-                    if (Regex.IsMatch(value, @"^\d+$"))
-                    {
-                        startrow_text = value;
-                    }
-                    else throw new System.ArgumentException("Start row needs to be numeric");
-                }
-                else throw new System.ArgumentException("Start row number required!");
-
-            }
-        }
-        public string Sheetname_text
-        {
-            get => sheetname_text;
-            set
-            {
-                if (!string.IsNullOrEmpty(value))
-                {
-                    sheetname_text = value;
-                }
-                else throw new System.ArgumentException("Sheet required!");
-
-            }
-        }
-        public List<string> File_list
-        {
-            get => file_list;
-            set
-            {
-                if (value.Count > 0)
-                {
-                    file_list = value;
-                }
-                else throw new System.ArgumentException("Must select multiple files!");
-            }
-
-        }
-        public ObservableCollection<string> PW_list
-        {
-            get => pw_list;
-            set
-            {
-                pw_list = value;
+                _passwords = value;
                 OnPropertyChanged();
             }
         }
-        protected void OnPropertyChanged([CallerMemberName] string name = null)
+        public bool IsButtonEnabled
         {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+            get => _isButtonEnabled;
+            set
+            {
+                _isButtonEnabled = value;
+                OnPropertyChanged();
+            }
         }
         public OpenFileDialog ChooseFiles { get; } = new OpenFileDialog
         {
             Multiselect = true,
             Filter = "Excel Files|*.xlsx;*.xls|Crosstab|*.xlsx;*.xls;*.csv|CSV files (*.csv)|*.csv",
         };
+
+        protected void OnPropertyChanged([CallerMemberName] string name = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+        }
+
+        public void MergeSpreadsheets(IProgress<SpreadsheetCollectionProgressModel> progress, CancellationToken cancelToken)
+        {
+            var spreadsheetCollection = new SpreadsheetCollection(Options);
+            try
+            {
+                spreadsheetCollection.MergeDTfromFiles(progress, cancelToken);
+            }
+            catch (OperationCanceledException)
+            {
+                throw;
+            }
+        }
+        public void MergeSpreadsheetsTest(IProgress<SpreadsheetCollectionProgressModel> progress, CancellationToken cancelToken)
+        {
+            SpreadsheetCollectionProgressModel report = new SpreadsheetCollectionProgressModel();
+
+            foreach (var file in Files)
+            {
+                Task.Delay(5000).Wait();
+                report.steps.Add($"Loading: {file}\tRow: {StartRow}\tSheet:{SheetName}...");
+                progress.Report(report);
+                cancelToken.ThrowIfCancellationRequested();
+            }
+        }
+        
+        private bool ValidateInput()
+        {
+            return IsSheetNameValid() & IsStartRowValid() & AreFilesSelected();
+        }
+        private bool IsStartRowValid()
+        {
+            if (string.IsNullOrEmpty(StartRow) || !Regex.IsMatch(StartRow, @"^\d+$"))
+            {
+                return false;
+            }
+            return true;
+        }
+        private bool IsSheetNameValid()
+        {
+            if (string.IsNullOrEmpty(SheetName))
+            {
+                return false;
+            }
+            return true;
+        }
+        private bool AreFilesSelected()
+        {
+            if (Files.Count < 1)
+            {
+                return false;
+            }
+            return true;
+        }
 
     }
 }

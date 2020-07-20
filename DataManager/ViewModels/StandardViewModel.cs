@@ -30,7 +30,6 @@ namespace DataManager.ViewModels
                     else throw new System.ArgumentException("Start row needs to be numeric");
                 }
                 else throw new System.ArgumentException("Start row number required!");
-
             }
         }
         public string Sheetname_text

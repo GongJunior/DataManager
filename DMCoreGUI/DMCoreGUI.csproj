@@ -43,4 +43,8 @@
     </Content>
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\DMCoreLibrary\DMCoreLibrary.csproj" />
+  </ItemGroup>
+
 </Project>

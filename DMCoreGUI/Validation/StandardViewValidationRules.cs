@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Globalization;
-using System.Text;
 using System.Windows.Controls;
 
 namespace DMCoreGUI.Validation
@@ -12,11 +10,11 @@ namespace DMCoreGUI.Validation
         {
             try
             {
-                var _ = Int32.Parse((string)value);
+                var _ = int.Parse((string)value);
             }
             catch (Exception)
             {
-                return new ValidationResult(false, "Illegal input given, try again");
+                return new ValidationResult(false, "Row must be a number!");
             }
 
             return ValidationResult.ValidResult;

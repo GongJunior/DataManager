@@ -1,69 +1,71 @@
-﻿using DMCoreLibrary.Events;
+﻿using DMCoreLibrary.Models;
 using DMCoreLibrary.Spreadsheets;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.IO;
-using System.Text;
+using System.Threading;
 
 namespace DMCoreLibrary.Connections
 {
-    partial class SpreadsheetCollection
+    public class SpreadsheetCollection
     {
         private SpreadsheetCollectionOptions Options { get; }
-        public event EventHandler<CancelEventArgs>? CheckCancel;
-        public event EventHandler<ProgressChangedEventArgs>? ProgressChanged;
 
         public SpreadsheetCollection(SpreadsheetCollectionOptions collectionOptions)
         {
             Options = collectionOptions;
+            System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance);
         }
 
-        public void MergeDTfromFiles()
+        public void MergeDTfromFiles(IProgress<SpreadsheetCollectionProgressModel> progress, CancellationToken cancellationToken)
         {
-            //Convert filesList to FileInfo & find cwd
+            SpreadsheetCollectionProgressModel report = new SpreadsheetCollectionProgressModel();
             List<FileInfo> files = StringToFileInfo(Options.Files);
             string dir = files[0].DirectoryName;
 
-            //generates sheet list if necessary
             List<string> sheets = GenerateSheets();
 
-            //Generate list of DataTables from excel data
             List<DataTable> tables = new List<DataTable>();
             DataTable errorTable = new DataTable();
+
             foreach (FileInfo file in files)
             {
-                OnProgressChanged(1, $"Loading {file.Name}...");
+                report.steps.Add($"Loading {file.Name}...");
+                progress.Report(report);
 
                 var package = SpreadsheetUtilities.GetDTfromExcel(file, Convert.ToInt32(Options.StartRow), sheets, Options.Passwords);
                 tables.AddRange(package.data);
                 errorTable.Merge(package.errors);
-                if (OnCheckCancel())
-                {
-                    return;
-                }
+                cancellationToken.ThrowIfCancellationRequested();
             }
 
             //Combine all tables into first table in list
             for (int i = 1; i < tables.Count; i++)
             {
-                OnProgressChanged(2, $"Merging {tables[i].TableName}...");
+                report.steps.Add($"Merging {tables[i].TableName}...");
+                progress.Report(report);
                 tables[0].Merge(tables[i], false, MissingSchemaAction.Add);
-                if (OnCheckCancel())
-                {
-                    return;
-                }
                 tables[i] = null;
+                cancellationToken.ThrowIfCancellationRequested();
             }
 
-            OnProgressChanged(3, "Sending to Excel...");
+            report.IsCancellable = false;
+            report.steps.Add("Sending to Excel...");
+            progress.Report(report);
+
             try
             {
+                cancellationToken.ThrowIfCancellationRequested();
                 SpreadsheetUtilities.DTtoExcel(tables[0], dir, errorTable);
             }
             catch (ArgumentOutOfRangeException e)
             {
-                throw new System.ArgumentOutOfRangeException("Sheet(s) not found in any files!", e);
+                throw new ArgumentOutOfRangeException("Sheet(s) not found in any files!", e);
+            }
+            catch (OperationCanceledException)
+            {
+                throw;
             }
 
         }
@@ -105,28 +107,5 @@ namespace DMCoreLibrary.Connections
             }
             return sheetList;
         }
-
-        protected virtual bool OnCheckCancel()
-        {
-            EventHandler<CancelEventArgs>? handler = CheckCancel;
-            if (handler != null)
-            {
-                CancelEventArgs e = new CancelEventArgs();
-                handler(this, e);
-                return e.Cancel;
-            }
-            return false;
-        }
-
-
-        protected virtual void OnProgressChanged(int part, string message)
-        {
-            EventHandler<ProgressChangedEventArgs>? handler = ProgressChanged;
-            if (ProgressChanged != null)
-            {
-                handler(this, new ProgressChangedEventArgs(part, message));
-            }
-        }
-
     }
 }

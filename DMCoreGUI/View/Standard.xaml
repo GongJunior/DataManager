@@ -3,7 +3,7 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-      xmlns:local="clr-namespace:DMCoreGUI"
+      xmlns:local="clr-namespace:DMCoreGUI.View"
       xmlns:vm="clr-namespace:DMCoreGUI.ViewModel"
       xmlns:val="clr-namespace:DMCoreGUI.Validation"
       mc:Ignorable="d" 
@@ -12,8 +12,6 @@
       Title="Standard">
 
     <Page.Resources>
-        <vm:StandardViewModel x:Key="myDataSource"/>
-
         <ControlTemplate x:Key="ValidationTemplate">
             <DockPanel>
                 <TextBlock Foreground="Red" FontSize="20">!</TextBlock>
@@ -42,20 +40,20 @@
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
 
-        <Button x:Name="OpenFld" Grid.Row="0" VerticalAlignment="Top" Grid.Column="0" Width="25" Height="25" Click="SlctFiles_Click" Margin="10,10,53,0">
+        <Button x:Name="OpenFld" Grid.Row="0" VerticalAlignment="Top" Grid.Column="0" Width="25" Height="25" Click="SlctFiles_Click" Margin="10,10,53,0" IsEnabled="{Binding IsButtonEnabled}">
             <Image Source="/resources/FindinFiles.png" ToolTip="Select Files" HorizontalAlignment="Left"/>
         </Button>
-        <Button Grid.Column="3" Grid.Row="2" VerticalAlignment="Bottom" Height="25" Width="25" Click="Run_Button_Click" Margin="30,0,32,59">
+        <Button x:Name="run" Grid.Column="3" Grid.Row="2" VerticalAlignment="Bottom" Height="25" Width="25" Click="Run_Button_Click" Margin="30,0,32,59" IsEnabled="{Binding IsButtonEnabled}">
             <Image Source="/resources/run.png"/>
         </Button>
         <Button x:Name="addpw" Grid.Column="2" Grid.Row="0" Height="25" Width="25" VerticalAlignment="Bottom" HorizontalAlignment="Center" Margin="0,0,0,50" Click="Addpw_Click">
-            <Image Source="/resources/add.png"/>
+            <Image Source="/resources/add.png" IsEnabled="{Binding IsButtonEnabled}"/>
         </Button>
-        <Button x:Name="RmAllPW" Grid.Column="2" Grid.Row="0" Height="25" Width="25" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="0,0,0,50" Click="RmAllPW_Click">
+        <Button x:Name="RmAllPW" Grid.Column="2" Grid.Row="0" Height="25" Width="25" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="0,0,0,50" Click="RmAllPW_Click" IsEnabled="{Binding IsButtonEnabled}">
             <Image Source="/resources/remove.png"/>
         </Button>
 
-        <ListBox x:Name="passwords" Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" Height="40" Margin="10,0" VerticalAlignment="Bottom" ItemsSource="{Binding PW_list}" HorizontalContentAlignment="Stretch" >
+        <ListBox x:Name="passwords" Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" Height="40" Margin="10,0" VerticalAlignment="Bottom" ItemsSource="{Binding Passwords}" HorizontalContentAlignment="Stretch" >
             <ListBox.ItemContainerStyle>
                 <Style TargetType="ListBoxItem">
                     <Style.Triggers>
@@ -73,7 +71,7 @@
                             <ColumnDefinition Width="15"/>
                         </Grid.ColumnDefinitions>
                         <TextBlock Text="{Binding}"/>
-                        <Button Grid.Column="1" Click="Pwrm_Click" Height="10">
+                        <Button Grid.Column="1" Click="Pwrm_Click" Height="10" IsEnabled="{Binding IsButtonEnabled}">
                             <Image Source="/Resources/remove.png"/>
                         </Button>
                     </Grid>
@@ -83,7 +81,7 @@
 
         <TextBox x:Name="StartRow" Grid.Column="1" Grid.Row="0" Validation.ErrorTemplate="{StaticResource ValidationTemplate}" Style="{StaticResource TextBoxInError}" HorizontalAlignment="Left" VerticalAlignment="Center" Height="25" Width="25" Margin="0,39,0,114">
             <TextBox.Text>
-                <Binding Path="Startrow_text" Source="{StaticResource myDataSource}" ValidatesOnExceptions="True" UpdateSourceTrigger="LostFocus">
+                <Binding Path="StartRow" ValidatesOnExceptions="True" UpdateSourceTrigger="PropertyChanged">
                     <Binding.ValidationRules>
                         <val:StartRowValidationRule/>
                     </Binding.ValidationRules>
@@ -92,7 +90,7 @@
         </TextBox>
         <TextBox x:Name="SheetName" Grid.Column="1" Grid.Row="0" Grid.ColumnSpan="2" Validation.ErrorTemplate="{StaticResource ValidationTemplate}" Style="{StaticResource TextBoxInError}" Height="25" HorizontalAlignment="Left" VerticalAlignment="Center"  TextWrapping="Wrap" Width="100" Margin="0,59,0,74">
             <TextBox.Text>
-                <Binding Path="Sheetnames" Source="{StaticResource myDataSource}" ValidatesOnExceptions="True" UpdateSourceTrigger="LostFocus">
+                <Binding Path="SheetName" ValidatesOnExceptions="True" UpdateSourceTrigger="PropertyChanged">
                     <Binding.ValidationRules>
                         <val:SheetNameValidationRule/>
                     </Binding.ValidationRules>
@@ -107,5 +105,4 @@
 
         <TextBlock x:Name="NumSelected" Grid.Row="0" TextWrapping="NoWrap" Height="15" Width="45" FontSize="12" Text="0 files!" Foreground="#FFC80000" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="43,14,0,0"/>
     </Grid>
-
 </Page>

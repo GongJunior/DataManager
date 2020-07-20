@@ -5,7 +5,7 @@ using System.Text;
 
 namespace DMCoreLibrary.Connections
 {
-    class SpreadsheetCollectionOptions
+    public class SpreadsheetCollectionOptions
     {
         public List<string> Files { get; set; } = new List<string>();
         public string StartRow { get; set; } = "1";
