@@ -1,6 +1,6 @@
-﻿using DMCoreLibrary.Models;
+﻿using DMCoreGUI.ViewModel;
+using DMCoreLibrary.Models;
 using System;
-using System.Diagnostics;
 using System.Threading;
 using System.Windows;
 
@@ -11,58 +11,29 @@ namespace DMCoreGUI.View
     /// </summary>
     public partial class StandardProgressWindow : Window
     {
-        public Progress<SpreadsheetCollectionProgressModel> Progress { get; set; }
-        private CancellationTokenSource cancelSource { get; set; }
-        private bool IsProcessCancellable { get; set; }
+        private StandardProgressWindowViewModel vm;
         public StandardProgressWindow(Progress<SpreadsheetCollectionProgressModel> progress, CancellationTokenSource cxl)
         {
             InitializeComponent();
-            Progress = progress;
-            cancelSource = cxl;
-            Progress.ProgressChanged += ReportProgress;
+            vm = new StandardProgressWindowViewModel(progress, cxl);
+            DataContext = vm;
             Show();
         }
 
-        public void Unsubscribe()
+        public void ProcessCancelled()
         {
-            Progress.ProgressChanged -= ReportProgress;
-        }
-
-        private void ReportProgress(object sender, SpreadsheetCollectionProgressModel e)
-        {
-
-            IsProcessCancellable = e.IsCancellable;
-            output.Text = string.Empty;
-            foreach (var step in e.steps)
-            {
-                output.Text += $"{step}\n";
-            }
+            vm.ProgressOutput = "Process sucessfully cancelled";
         }
 
         private void CancelButton_Click(object sender, EventArgs e)
         {
-            if (IsProcessCancellable)
-            {
-                cancelSource.Cancel();
-            }
-            else
-            {
-                output.Text += "Cannot be cancelled, please wait...\n";
-            }
+            vm.RequestCancellation();
         }
 
         private void Close_Click(object sender, RoutedEventArgs e)
         {
-            if (IsProcessCancellable)
-            {
-                cancelSource.Cancel();
-                Close();
-            }
-            else
-            {
-                MessageBox.Show("Remaing process will be completed in the background");
-                Close();
-            }
+            vm.RequestCloseWindow();
+            Close();
         }
     }
 }

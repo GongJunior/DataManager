@@ -20,7 +20,7 @@ namespace DMCoreLibrary.Connections
 
         public void MergeDTfromFiles(IProgress<SpreadsheetCollectionProgressModel> progress, CancellationToken cancellationToken)
         {
-            SpreadsheetCollectionProgressModel report = new SpreadsheetCollectionProgressModel();
+            SpreadsheetCollectionProgressModel report = new SpreadsheetCollectionProgressModel(ProcessState.IsRunning);
             List<FileInfo> files = StringToFileInfo(Options.Files);
             string dir = files[0].DirectoryName;
 
@@ -66,6 +66,12 @@ namespace DMCoreLibrary.Connections
             catch (OperationCanceledException)
             {
                 throw;
+            }
+            finally
+            {
+                report.State = ProcessState.Completed;
+                report.steps.Add("Process Completed!");
+                progress.Report(report);
             }
 
         }

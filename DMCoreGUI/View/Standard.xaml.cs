@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
@@ -44,20 +43,21 @@ namespace DMCoreGUI.View
                     vm.IsButtonEnabled = false;
                     progressWindow?.Close();
                     var cancelSource = new CancellationTokenSource();
-                    progressWindow = new StandardProgressWindow(new Progress<SpreadsheetCollectionProgressModel>(), cancelSource);
-                    await Task.Run(() => vm.MergeSpreadsheets(progressWindow.Progress, cancelSource.Token));
-                    progressWindow.output.Text += "Process completed";
-                    progressWindow.Unsubscribe();
+                    var progressReporter = new Progress<SpreadsheetCollectionProgressModel>();
+                    progressWindow = new StandardProgressWindow(progressReporter, cancelSource);
+
+                    await Task.Run(() => vm.MergeSpreadsheets(progressReporter, cancelSource.Token));
+
                     vm.IsButtonEnabled = true;
                 }
                 else
                 {
-                    MessageBox.Show($"Failed! Row:{vm.StartRow} Sheet:{vm.SheetName} Files:{vm.Files.Count}");
+                    _ = MessageBox.Show($"Double check your input!");
                 }
             }
             catch (OperationCanceledException)
             {
-                progressWindow.output.Text += "Process cancelled";
+                progressWindow.ProcessCancelled();
             }
             catch (Exception)
             {

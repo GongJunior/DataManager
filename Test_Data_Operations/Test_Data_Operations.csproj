@@ -69,12 +69,6 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\DataManager\DataManager.csproj">
-      <Project>{46c09a81-0314-4297-8989-541aca9859a5}</Project>
-      <Name>DataManager</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="test_resources\pw.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
