@@ -3,6 +3,7 @@ using DMCoreLibrary.Models;
 using System;
 using System.Threading;
 using System.Windows;
+using System.Windows.Controls;
 
 namespace DMCoreGUI.View
 {
@@ -34,6 +35,28 @@ namespace DMCoreGUI.View
         {
             vm.RequestCloseWindow();
             Close();
+        }
+
+        private void ScrollViewer_ScrollChanged(object sender, ScrollChangedEventArgs e)
+        {
+            var sv = sender as ScrollViewer;
+            var autoscroll = true;
+            if (e.ExtentHeightChange == 0)
+            {
+                if (sv.VerticalOffset == sv.ScrollableHeight)
+                {
+                    autoscroll = true;
+                }
+                else
+                {
+                    autoscroll = false;
+                }
+            }
+
+            if (autoscroll && e.ExtentHeightChange != 0)
+            {
+                sv.ScrollToVerticalOffset(sv.ExtentHeight);
+            }
         }
     }
 }

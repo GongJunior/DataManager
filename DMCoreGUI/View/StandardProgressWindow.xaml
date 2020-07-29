@@ -23,7 +23,7 @@
 
         <Button x:Name="cancel" Content="Cancel" Grid.Column="1" Grid.Row="2" Click="CancelButton_Click"/>
         <Button x:Name="close" Content="Close" Grid.Column="3" Grid.Row="2" Click="Close_Click"/>
-        <ScrollViewer Grid.Column="1" Grid.ColumnSpan="3" Grid.Row="1" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
+        <ScrollViewer Grid.Column="1" Grid.ColumnSpan="3" Grid.Row="1" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto" ScrollChanged="ScrollViewer_ScrollChanged">
             <TextBlock x:Name="output" Text="{Binding Path=ProgressOutput}"/>
         </ScrollViewer>
     </Grid>
