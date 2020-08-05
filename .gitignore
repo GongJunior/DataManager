@@ -12,3 +12,4 @@ bld/
 DataManager/publish/
 *.user
 */packages.config
+FeatureTesting/

@@ -49,6 +49,7 @@ namespace DMCoreLibrary.Spreadsheets.Sources
 
                         while (reader.Read())
                         {
+                            // TODO: Resolve issue of file is active blank columns to end of sheet (xlsx max col: 16,384)
                             if (startRow_check < startingRow)
                             {
                                 startRow_check++;

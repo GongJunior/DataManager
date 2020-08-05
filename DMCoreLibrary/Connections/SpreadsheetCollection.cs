@@ -1,9 +1,11 @@
 ﻿using DMCoreLibrary.Models;
 using DMCoreLibrary.Spreadsheets;
+using ExcelDataReader;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.IO;
+using System.Text.RegularExpressions;
 using System.Threading;
 
 namespace DMCoreLibrary.Connections
@@ -75,6 +77,47 @@ namespace DMCoreLibrary.Connections
             }
 
         }
+
+        public List<DataFileInfo> GetFileDetails()
+        {
+            var details = new List<DataFileInfo>();
+            foreach (var file in Options.Files)
+            {
+                try
+                {
+                    using var stream = File.Open(file, FileMode.Open, FileAccess.Read);
+                    using var reader = ExcelReaderFactory.CreateReader(stream);
+                    var sheets = new List<string>();
+                    do
+                    {
+                        sheets.Add(reader.Name);
+                    } while (reader.NextResult());
+                    details.Add(new DataFileInfo(file, sheets));
+                }
+                catch (Exception)
+                {
+                    details.Add(new DataFileInfo(file, new List<string>(), FileType.Invalid));
+                }            
+            }
+            return details;
+        }
+
+        public static FileType DetermineExtension(string file)
+        {
+            if (Regex.IsMatch(file, @"\.(csv|txt)$"))
+            {
+                return FileType.CSV;
+            }
+            else if (Regex.IsMatch(file, @"\.xl(s|sb|sx)$"))
+            {
+                return FileType.Excel;
+            }
+            else
+            {
+                return FileType.Invalid;
+            }
+        }
+
 
 
         private List<string> GenerateSheets()

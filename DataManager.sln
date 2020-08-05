@@ -9,6 +9,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DMCoreGUI", "DMCoreGUI\DMCo
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DMCoreLibrary", "DMCoreLibrary\DMCoreLibrary.csproj", "{DAA105C7-C957-4EB8-BAA1-5FD68BA45DFE}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FeatureTesting", "FeatureTesting\FeatureTesting.csproj", "{A80BFDDE-B582-4A22-8123-33C6DD57FBC4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DMCoreLibraryTests", "DMCoreLibraryTests\DMCoreLibraryTests.csproj", "{1B6A997C-8D43-4D22-8ED3-7B53096471F6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +31,14 @@ Global
 		{DAA105C7-C957-4EB8-BAA1-5FD68BA45DFE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DAA105C7-C957-4EB8-BAA1-5FD68BA45DFE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DAA105C7-C957-4EB8-BAA1-5FD68BA45DFE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A80BFDDE-B582-4A22-8123-33C6DD57FBC4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A80BFDDE-B582-4A22-8123-33C6DD57FBC4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A80BFDDE-B582-4A22-8123-33C6DD57FBC4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A80BFDDE-B582-4A22-8123-33C6DD57FBC4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1B6A997C-8D43-4D22-8ED3-7B53096471F6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1B6A997C-8D43-4D22-8ED3-7B53096471F6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1B6A997C-8D43-4D22-8ED3-7B53096471F6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1B6A997C-8D43-4D22-8ED3-7B53096471F6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

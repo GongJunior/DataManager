@@ -49,6 +49,7 @@ namespace DMCoreLibrary.Spreadsheets
         //add DataTable to file with error sheet
         public static void DTtoExcel(DataTable dt, string loc, DataTable dtErrors)
         {
+            // TODO: Prevent writing file too large for xlsx
             using (ExcelPackage pkg = new ExcelPackage())
             {
                 ExcelWorksheet ws = pkg.Workbook.Worksheets.Add("Merge Output");
