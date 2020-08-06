@@ -13,3 +13,4 @@ DataManager/publish/
 *.user
 */packages.config
 FeatureTesting/
+Test_Data_Operations/
