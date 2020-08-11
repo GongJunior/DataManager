@@ -8,8 +8,8 @@
 
   <ItemGroup>
     <None Remove="resources\add.png" />
+    <None Remove="resources\appicon.ico" />
     <None Remove="resources\FindinFiles.png" />
-    <None Remove="resources\pf.ico" />
     <None Remove="resources\remove.png" />
     <None Remove="resources\run.png" />
     <None Remove="resources\server.png" />
@@ -17,8 +17,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="resources\pf.ico">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    <Content Include="resources\appicon.ico">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="resources\server.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:DMCoreGUI"
         mc:Ignorable="d"
-        Title="Data Manager" Height="600" Width="400" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" Topmost="False" WindowState="Normal" Icon=".\resources\pf.ico">
+        Title="Data Manager" Height="600" Width="400" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" Topmost="False" WindowState="Normal" Icon=".\resources\appicon.ico">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="50"/>
