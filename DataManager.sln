@@ -3,15 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30114.105
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test_Data_Operations", "Test_Data_Operations\Test_Data_Operations.csproj", "{9984D091-504C-41AC-A7AA-A69009924C0C}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DMCoreGUI", "DMCoreGUI\DMCoreGUI.csproj", "{BFA0B2CD-8ECC-448A-AE12-BC8EEF7293FE}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DMCoreLibrary", "DMCoreLibrary\DMCoreLibrary.csproj", "{DAA105C7-C957-4EB8-BAA1-5FD68BA45DFE}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FeatureTesting", "FeatureTesting\FeatureTesting.csproj", "{A80BFDDE-B582-4A22-8123-33C6DD57FBC4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DMCoreLibraryTests", "DMCoreLibraryTests\DMCoreLibraryTests.csproj", "{1B6A997C-8D43-4D22-8ED3-7B53096471F6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DMCoreLibraryTests", "DMCoreLibraryTests\DMCoreLibraryTests.csproj", "{1B6A997C-8D43-4D22-8ED3-7B53096471F6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -19,10 +17,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{9984D091-504C-41AC-A7AA-A69009924C0C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{9984D091-504C-41AC-A7AA-A69009924C0C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{9984D091-504C-41AC-A7AA-A69009924C0C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{9984D091-504C-41AC-A7AA-A69009924C0C}.Release|Any CPU.Build.0 = Release|Any CPU
 		{BFA0B2CD-8ECC-448A-AE12-BC8EEF7293FE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{BFA0B2CD-8ECC-448A-AE12-BC8EEF7293FE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BFA0B2CD-8ECC-448A-AE12-BC8EEF7293FE}.Release|Any CPU.ActiveCfg = Release|Any CPU

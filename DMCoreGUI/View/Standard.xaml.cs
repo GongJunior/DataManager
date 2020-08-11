@@ -82,5 +82,10 @@ namespace DMCoreGUI.View
         {
             vm.Passwords.Clear();
         }
+
+        private void SheetSelector_Click(object sender, RoutedEventArgs e)
+        {
+            vm.SelectSheetsAsync();
+        }
     }
 }

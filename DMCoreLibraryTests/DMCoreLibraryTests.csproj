@@ -7,6 +7,38 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="resources\fileRecon.txt" />
+    <None Remove="resources\pw_test1.xlsx" />
+    <None Remove="resources\pw_test2.xlsx" />
+    <None Remove="resources\test1.csv" />
+    <None Remove="resources\test1.xlsx" />
+    <None Remove="resources\test2.csv" />
+    <None Remove="resources\test2.xlsx" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="resources\fileRecon.txt" />
+    <Content Include="resources\pw_test1.xlsx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="resources\pw_test2.xlsx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="resources\test1.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="resources\test1.xlsx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="resources\test2.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="resources\test2.xlsx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.5.0" />
     <PackageReference Include="xunit" Version="2.4.0" />
     <PackageReference Include="xunit.runner.visualstudio" Version="2.4.0" />

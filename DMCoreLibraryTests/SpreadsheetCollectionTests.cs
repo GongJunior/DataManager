@@ -64,5 +64,11 @@ namespace DMCoreLibraryTests
                 Assert.Equal(expectedCount, actualCount);
             }
         }
+
+        [Fact]
+        public void MergeDTfromFiles_PasswordOptions_ReturnsMergedFile()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

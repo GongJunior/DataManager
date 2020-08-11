@@ -10,26 +10,41 @@ using System.Linq;
 using DMCoreLibrary.Models;
 using System;
 using System.Threading;
+using DMCoreGUI.View;
+using System.Windows.Controls;
+using System.Windows;
+using System.IO;
 
 namespace DMCoreGUI.ViewModel
 {
     public class StandardViewModel : INotifyPropertyChanged
     {
         public string StartRow { get; set; }
-        public string SheetName { get; set; }
-        public List<string> Files = new List<string>();
+
+        private string sheetName;
+        public string SheetName 
+        { 
+            get => sheetName;
+            set
+            {
+                sheetName = value;
+                OnPropertyChanged();
+            }
+        }
+        public List<string> Files { get; set; } = new List<string>();
         private ObservableCollection<string> _passwords = new ObservableCollection<string>();
         private bool _isButtonEnabled = true;
+
         private SpreadsheetCollectionOptions Options
         {
             get
             {
                 return new SpreadsheetCollectionOptions()
                 {
-                    Files = this.Files,
-                    StartRow = this.StartRow,
+                    Files = Files,
+                    StartRow = StartRow,
                     Sheets = SheetName,
-                    Passwords = this.Passwords.ToList()
+                    Passwords = Passwords.ToList()
                 };
             }
         }
@@ -92,7 +107,28 @@ namespace DMCoreGUI.ViewModel
                 cancelToken.ThrowIfCancellationRequested();
             }
         }
-        
+        public async Task SelectSheetsAsync()
+        {
+            IsButtonEnabled = false;
+            var spreadsheetCollection = new SpreadsheetCollection(new SpreadsheetCollectionOptions() { Files = Files });
+            var filesTask = Task.Run(() => spreadsheetCollection.GetFileDetails());
+            var fileDetails = await filesTask;
+            var sheetSelector = new SheetSelectionModal(fileDetails);
+            sheetSelector.SheetsSelected += SheetSelector_SheetsSelected;
+            _ = sheetSelector.ShowDialog();
+            IsButtonEnabled = true;
+            sheetSelector.SheetsSelected -= SheetSelector_SheetsSelected;
+        }
+
+        private void SheetSelector_SheetsSelected(object sender, Model.SheetsSelectedEventArgs e)
+        {
+            if (e.SelectedSheets.Count > 0)
+            {
+                var names = e.SelectedSheets.Select(p => p.SheetName).ToList();
+                SheetName = string.Join(",", names);
+            }
+        }
+
         private bool ValidateInput()
         {
             return IsSheetNameValid() & IsStartRowValid() & AreFilesSelected();
@@ -121,6 +157,5 @@ namespace DMCoreGUI.ViewModel
             }
             return true;
         }
-
     }
 }

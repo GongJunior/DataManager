@@ -47,4 +47,10 @@
     <ProjectReference Include="..\DMCoreLibrary\DMCoreLibrary.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="resources\loading.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

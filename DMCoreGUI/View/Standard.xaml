@@ -49,9 +49,10 @@
         <Button x:Name="addpw" Grid.Column="2" Grid.Row="0" Height="25" Width="25" VerticalAlignment="Bottom" HorizontalAlignment="Center" Margin="0,0,0,50" Click="Addpw_Click">
             <Image Source="/resources/add.png" IsEnabled="{Binding IsButtonEnabled}"/>
         </Button>
-        <Button x:Name="RmAllPW" Grid.Column="2" Grid.Row="0" Height="25" Width="25" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="0,0,0,50" Click="RmAllPW_Click" IsEnabled="{Binding IsButtonEnabled}">
+        <Button x:Name="RmAllPW" Grid.Column="2" Grid.Row="0" Height="25" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="0,0,0,50" Click="RmAllPW_Click" IsEnabled="{Binding IsButtonEnabled}">
             <Image Source="/resources/remove.png"/>
         </Button>
+        <Button x:Name="SheetSelector" Grid.Column="2" Grid.Row="0" HorizontalAlignment="Right" Height="25" Margin="0,59,0,74" Click="SheetSelector_Click">Select Sheets</Button>
 
         <ListBox x:Name="passwords" Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" Height="40" Margin="10,0" VerticalAlignment="Bottom" ItemsSource="{Binding Passwords}" HorizontalContentAlignment="Stretch" >
             <ListBox.ItemContainerStyle>
@@ -79,7 +80,7 @@
             </ListBox.ItemTemplate>
         </ListBox>
 
-        <TextBox x:Name="StartRow" Grid.Column="1" Grid.Row="0" Validation.ErrorTemplate="{StaticResource ValidationTemplate}" Style="{StaticResource TextBoxInError}" HorizontalAlignment="Left" VerticalAlignment="Center" Height="25" Width="25" Margin="0,39,0,114">
+        <TextBox x:Name="StartRow" Grid.Column="1" Grid.Row="0" Validation.ErrorTemplate="{StaticResource ValidationTemplate}" Style="{StaticResource TextBoxInError}" HorizontalAlignment="Left" VerticalAlignment="Center" Height="25" Width="25" Margin="0,39,0,114" IsEnabled="{Binding IsButtonEnabled}">
             <TextBox.Text>
                 <Binding Path="StartRow" ValidatesOnExceptions="True" UpdateSourceTrigger="PropertyChanged">
                     <Binding.ValidationRules>
@@ -88,9 +89,9 @@
                 </Binding>
             </TextBox.Text>
         </TextBox>
-        <TextBox x:Name="SheetName" Grid.Column="1" Grid.Row="0" Grid.ColumnSpan="2" Validation.ErrorTemplate="{StaticResource ValidationTemplate}" Style="{StaticResource TextBoxInError}" Height="25" HorizontalAlignment="Left" VerticalAlignment="Center"  TextWrapping="Wrap" Width="100" Margin="0,59,0,74">
+        <TextBox x:Name="SheetName" Grid.Column="1" Grid.Row="0" Grid.ColumnSpan="2" Validation.ErrorTemplate="{StaticResource ValidationTemplate}" Style="{StaticResource TextBoxInError}" Height="25" HorizontalAlignment="Left" VerticalAlignment="Center"  TextWrapping="NoWrap" Width="100" Margin="0,59,0,74" IsEnabled="{Binding IsButtonEnabled}">
             <TextBox.Text>
-                <Binding Path="SheetName" ValidatesOnExceptions="True" UpdateSourceTrigger="PropertyChanged">
+                <Binding Path="SheetName" ValidatesOnExceptions="True" UpdateSourceTrigger="PropertyChanged" Mode="TwoWay">
                     <Binding.ValidationRules>
                         <val:SheetNameValidationRule/>
                     </Binding.ValidationRules>
