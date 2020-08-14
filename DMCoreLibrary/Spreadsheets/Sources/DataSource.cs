@@ -83,32 +83,16 @@ namespace DMCoreLibrary.Spreadsheets.Sources
 
             for (int i = 0; i < row.FieldCount; i++)
             {
-                int dupNameCounter = 1;
+                var counter = 1;
+                string fileVal = row[i]?.ToString() ?? "COLUMN"; //handles null & invalid cast
+                string actualVal = fileVal;
 
-                try
+                while (table.Columns.Contains(actualVal))
                 {
-                    DataColumn column = new DataColumn(row.GetString(i), typeof(object));
-                    table.Columns.Add(column);
+                    actualVal = fileVal + $"_{counter}"; //handles dup case
+                    counter++;
                 }
-                catch (ArgumentException)
-                {
-                    //should catch null returned for column name
-                    DataColumn column = new DataColumn("Column" + i.ToString(), typeof(object));
-                    table.Columns.Add(column);
-                }
-                catch (DuplicateNameException)
-                {
-                    DataColumn column = new DataColumn(row.GetString(i) + dupNameCounter.ToString(), typeof(object));
-                    table.Columns.Add(column);
-                    dupNameCounter++;
-                }
-                catch (InvalidCastException)
-                {
-                    DataColumn column = new DataColumn(row.GetValue(i).ToString(), typeof(object));
-                    table.Columns.Add(column);
-                }
-
-
+                table.Columns.Add(new DataColumn(actualVal, typeof(object)));
             }
 
             return table;

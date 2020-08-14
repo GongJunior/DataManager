@@ -8,3 +8,7 @@ file: t1.xlsx sheets: 1
 file: t2.xlsx sheets: 3
 file: t2.xlsx sheets: 4
 file: maxBlankColumnsRead.xlsx sheets: 7
+file: NumbersAsColumnNames.xlsx sheets: 1
+file: StringsAsColumnNames.xlsx sheets: 1
+file: ColumnNameswBlankes.xlsx sheets: 1
+file: BlanksAsColumnNames.xlsx sheets: 1

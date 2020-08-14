@@ -7,9 +7,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="resources\BlanksAsColumnNames.xlsx" />
+    <None Remove="resources\ColumnNameswBlanks.xlsx" />
     <None Remove="resources\fileRecon.txt" />
+    <None Remove="resources\NumbersAsColumnNames.xlsx" />
     <None Remove="resources\pw_test1.xlsx" />
     <None Remove="resources\pw_test2.xlsx" />
+    <None Remove="resources\StringsAsColumnNames.xlsx" />
     <None Remove="resources\test1.csv" />
     <None Remove="resources\test1.xlsx" />
     <None Remove="resources\test2.csv" />
@@ -17,7 +21,19 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Include="resources\BlanksAsColumnNames.xlsx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="resources\fileRecon.txt" />
+    <Content Include="resources\ColumnNameswBlanks.xlsx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="resources\StringsAsColumnNames.xlsx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="resources\NumbersAsColumnNames.xlsx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="resources\pw_test1.xlsx">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
